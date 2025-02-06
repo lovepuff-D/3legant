@@ -1,0 +1,215 @@
+@use "sass:meta";
+@use 'sass:list';
+@use 'sass:math';
+@use 'sass:map';
+
+$base: #fff;
+$blue: #377DFF;
+$neutral-01: #FEFEFE;
+$neutral-02: #F3F5F7;
+$neutral-03: #E8ECEF;
+$neutral-04: #6c7275;
+$neutral-05: #343839;
+$neutral-07: #141718;
+
+$transition-duration: .3s;
+
+/* Private font mixin */
+/* Headings */
+@mixin -hero {
+    font-family: 'Poppins', sans-serif;
+    font-size: 96px;
+    line-height: 96px;
+}
+
+@mixin -heading-1 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 80px;
+    line-height: 84px;
+    letter-spacing: -3px;
+}
+
+@mixin -heading-2 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 72px;
+    line-height: 76px;
+    letter-spacing: -2px;
+}
+
+@mixin -heading-3 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 54px;
+    line-height: 58px;
+    letter-spacing: -1px;
+}
+
+@mixin -heading-4 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 40px;
+    line-height: 44px;
+    letter-spacing: -0.4px;
+}
+
+@mixin -heading-5 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 34px;
+    line-height: 38px;
+    letter-spacing: -0.4px;
+}
+
+@mixin -heading-6 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 28px;
+    line-height: 34px;
+    letter-spacing: -0.6px;
+}
+
+@mixin -heading-7 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 20px;
+    line-height: 28px;
+    letter-spacing: 0;
+}
+
+/* Texts */
+
+@mixin -caption-1 {
+    font-size: 14px;
+    line-height: 22px;
+    letter-spacing: 0;
+}
+
+@mixin -caption-2 {
+    font-size: 12px;
+    line-height: 20px;
+    letter-spacing: 0;
+}
+
+@mixin -body-1 {
+    font-size: 20px;
+    line-height: 32px;
+    letter-spacing: 0;
+}
+
+@mixin -body-2 {
+    font-size: 16px;
+    line-height: 26px;
+    letter-spacing: 0;
+}
+
+@mixin -hairline-1 {
+    font-size: 16px;
+    line-height: 16px;
+    letter-spacing: 0;
+}
+
+/* Private font mixin */
+/* Buttons */
+
+@mixin -button-xl {
+    font-size: 26px;
+    line-height: 38px;
+    letter-spacing: 0;
+}
+
+@mixin -button-l {
+    font-size: 22px;
+    line-height: 34px;
+    letter-spacing: 0;
+}
+
+@mixin -button-m {
+    font-size: 18px;
+    line-height: 32px;
+    letter-spacing: -0.4px;
+}
+
+@mixin -button-s {
+    font-size: 16px;
+    line-height: 28px;
+    letter-spacing: -0.4px;
+}
+
+@mixin -button-xs {
+    font-size: 14px;
+    line-height: 24px;
+    letter-spacing: 0;
+}
+
+/* --- */
+
+@mixin heading($name, $font-weight: 500) {
+    $mixin: meta.get-mixin(-$name);
+    @include meta.apply($mixin);
+
+    @if $font-weight {
+        font-weight: $font-weight;
+    }
+}
+
+$font-weights: 100, 200, 300, 400, 500, 600, 700, 800, 900, semi, bold;
+$font-string-weights: semi, bold;
+
+@mixin text($name, $font-weight: 400) {
+    $has-noncoincidence: true;
+
+    @each $weight in list.append($font-weights, $font-string-weights) {
+        @if ($weight == $font-weight) {
+            $has-noncoincidence: false
+        }
+    }
+
+    @if $has-noncoincidence {
+        @error "Property #{$font-weight} must be from 100 to 900 or either semi or bold";
+    }
+
+    $mixin: meta.get-mixin(-$name);
+    @include meta.apply($mixin);
+
+    @if meta.type-of($font-weight) != number {
+        @if $font-weight == semi {
+            $font-weight: 600;
+        } @else if $font-weight == bold {
+            $font-weight: 700;
+        } @else {
+            $font-weight: 400;
+        }
+    }
+
+    font-weight: $font-weight
+}
+
+$-breakpoints: ("t": 720px, "l": 1000px, "d": 1250px);
+
+/*
+    @param $breakpoint-value - $-breakpoints
+    @param $breakpoint-value - number with px, e.g 920px
+*/
+@mixin respond-to($breakpoint-name, $breakpoint-value: null) {
+    $has-noncoincidence: true;
+    $result: null;
+
+    @if $breakpoint-name {
+        @each $name, $value in $-breakpoints {
+            @if $breakpoint-name == $name {
+                $has-noncoincidence: false;
+            }
+        }
+
+        @if $has-noncoincidence {
+            @error "Property #{$breakpoint-name} must be '#{map.keys($-breakpoints)}'";
+        }
+
+        $result: map.get($-breakpoints, $breakpoint-name);
+    } @else {
+        @if math.is-unitless($breakpoint-value) {
+            @error "Property #{$breakpoint-value} must be with unit (px)'";
+        } @else {
+            $result: $breakpoint-value
+        }
+    }
+
+    @media (min-width: $result) {
+        @content;
+    }
+}

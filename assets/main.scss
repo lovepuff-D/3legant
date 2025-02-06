@@ -1,0 +1,43 @@
+@import "reset";
+@import "transitions";
+@import "swiper";
+
+body {
+    font-family: 'Inter', sans-serif;
+    color: $neutral-07;
+    font-size: 14px;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: 'Poppins', sans-serif;
+}
+
+a {
+    display: inline-block;
+}
+
+button {
+    cursor: pointer;
+}
+
+.container {
+    width: 100%;
+    padding: 0 32px;
+
+    @media (min-width: 1250px) {
+        max-width: 1120px;
+        margin: 0 auto;
+        padding: 0;
+    }
+}
+
+#__nuxt {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}

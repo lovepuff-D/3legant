@@ -1,0 +1,9 @@
+.opacity-enter-active,
+.opacity-leave-active {
+    transition: opacity $transition-duration ease;
+}
+
+.opacity-enter-from,
+.opacity-leave-to {
+    opacity: 0;
+}
