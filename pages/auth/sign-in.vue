@@ -11,6 +11,8 @@ definePageMeta({
     layout: 'auth',
 })
 
+const { $fetchData } = useNuxtApp();
+
 const isActionSucceed = ref(false);
 
 const isLoading = ref(false);
@@ -26,8 +28,12 @@ const { values: formValues, defineField, errors, setFieldError, handleSubmit } =
         password: yup.string().required(),
     }))
 })
-const [emailValue] = defineField('email', defineFiledConfig);
-const [passwordValue] = defineField('password', defineFiledConfig);
+enum EFieldTypes {
+    email = 'email',
+    password = 'password',
+}
+const [emailValue] = defineField(EFieldTypes.email, defineFiledConfig);
+const [passwordValue] = defineField(EFieldTypes.password, defineFiledConfig);
 
 const rememberMeCheckbox = ref(false);
 
@@ -41,27 +47,23 @@ const onSubmit = handleSubmit(async () => {
     isLoading.value = true;
 
     try {
-        const a: { result: boolean, errorType: string, errorMessage: string } = await $fetch(`/api/auth/login`, {
-            method: 'POST',
-            body: {
-                email: formValues.email,
-                password: formValues.password,
-            }
+        const response = await $fetchData.auth.login({
+            email: formValues.email as string,
+            password: formValues.password as string,
         });
 
-        if (a.result) {
+        if (response.result) {
             sessionStorage.setItem('isAuth', 'true')
             isActionSucceed.value = true;
             setTimeout(() => {
                 navigateTo('/', { replace: true })
             }, 1500);
         } else {
-            if (a.errorType === 'email') {
-                setFieldError('email', a.errorMessage)
-            } else if (a.errorType === 'password') {
-                setFieldError('password', a.errorMessage)
-            }
-            throw new Error();
+            let fieldType = Object.values(EFieldTypes)
+                .includes(response.errorType as EFieldTypes)
+                ? response.errorType as EFieldTypes : null;
+
+            fieldType && setFieldError(fieldType, response.errorMessage as string)
         }
     } finally {
         isLoading.value = false;

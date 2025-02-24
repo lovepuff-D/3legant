@@ -11,6 +11,8 @@ definePageMeta({
     layout: 'auth',
 })
 
+const { $fetchData } = useNuxtApp();
+
 const isActionSucceed = ref(false);
 
 const isLoading = ref(false);
@@ -28,10 +30,16 @@ const { values: formValues, defineField, errors, setFieldError, handleSubmit } =
         policy: yup.boolean().oneOf([true], 'Agree to Terms and Policy').required('Agree to Terms and Policy'),
     }))
 })
-const [nameValue] = defineField('name', defineFiledConfig);
-const [emailValue] = defineField('email', defineFiledConfig);
-const [passwordValue] = defineField('password', defineFiledConfig);
-const [policyValue] = defineField('policy', defineFiledConfig, );
+enum EFieldTypes {
+    name = 'name',
+    email = 'email',
+    password = 'password',
+    policy = 'policy',
+}
+const [nameValue] = defineField(EFieldTypes.name, defineFiledConfig);
+const [emailValue] = defineField(EFieldTypes.email, defineFiledConfig);
+const [passwordValue] = defineField(EFieldTypes.password, defineFiledConfig);
+const [policyValue] = defineField(EFieldTypes.policy, defineFiledConfig, );
 
 const isShowPassword = ref(false);
 const passwordInputType = computed(() => isShowPassword.value ? 'type' : 'password');
@@ -43,29 +51,25 @@ const onSubmit = handleSubmit(async () => {
     isLoading.value = true;
 
     try {
-        const a: { result: boolean, errorType: string, errorMessage: string } = await $fetch(`/api/auth/create`, {
-            method: 'POST',
-            body: {
-                name: formValues.name,
-                email: formValues.email,
-                password: formValues.password,
-                policy: formValues.policy,
-            }
+        const response = await $fetchData.auth.create({
+            name: formValues.name as string,
+            email: formValues.email as string,
+            password: formValues.password as string,
+            policy: formValues.policy as boolean,
         });
 
-        if (a.result) {
+        if (response.result) {
             sessionStorage.setItem('isAuth', 'true')
             isActionSucceed.value = true;
             setTimeout(() => {
                 navigateTo('/', { replace: true })
             }, 1500);
         } else {
-            if (a.errorType === 'email') {
-                setFieldError('email', a.errorMessage)
-            } else if (a.errorType === 'password') {
-                setFieldError('password', a.errorMessage)
-            }
-            throw new Error();
+            let fieldType = Object.values(EFieldTypes)
+                .includes(response.errorType as EFieldTypes)
+                ? response.errorType as EFieldTypes : null;
+
+            fieldType && setFieldError(fieldType, response.errorMessage as string)
         }
     } finally {
         isLoading.value = false;
