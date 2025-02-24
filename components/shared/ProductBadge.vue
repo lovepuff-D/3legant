@@ -38,7 +38,7 @@ const { isDiscountActive } = useProductHelper(props.product);
 }
 
 .discount {
-    background: #38CB89;
+    background: $green;
     color: $neutral-01;
 }
 </style>

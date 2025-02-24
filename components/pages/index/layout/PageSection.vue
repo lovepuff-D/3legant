@@ -2,22 +2,26 @@
 import type { RouterLinkProps } from '#vue-router';
 import IndexPageLink from '~/components/pages/components/IndexPageLink.vue';
 
-withDefaults(defineProps<{
+const props = withDefaults(defineProps<{
     title: string,
+    titleSize?: 'small' | 'medium'
     linkTitle: string,
     isShowFooter?: boolean,
     href: RouterLinkProps['to']
 }>(), {
     isShowFooter: false,
+    titleSize: 'medium',
 });
 
+const style = useCssModule();
 
+const titleClassList = computed(() => [style.title, style[`_${props.titleSize}`]])
 </script>
 
 <template>
     <div>
         <div :class="$style.header">
-            <div :class="$style.title">{{ title }}</div>
+            <div :class="titleClassList">{{ title }}</div>
             <IndexPageLink
                 :class="$style.headerLink"
                 :href="href"
@@ -43,8 +47,13 @@ withDefaults(defineProps<{
 }
 
 .title {
-    width: 60%;
-    @include heading(heading-5);
+    &._medium {
+        @include heading(heading-5);
+    }
+
+    &._small {
+        @include heading(heading-6);
+    }
 }
 
 .headerLink {

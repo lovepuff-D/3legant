@@ -49,11 +49,14 @@
                 </ul>
             </nav>
             <div :class="$style.rightSide">
-                <button :class="$style.svgBtn">
+                <NuxtLink
+                    to="/auth/sign-in"
+                    :class="$style.svgBtn"
+                >
                     <svg>
                         <use href="/svg-sprite/sprite.svg#account"/>
                     </svg>
-                </button>
+                </NuxtLink>
                 <!--TODO Вынести в компонент, эта штука используется в мобилке-->
                 <button :class="[$style.svgBtn, $style.cartBtn]">
                     <svg>

@@ -52,14 +52,48 @@
             <div :class="$style.bottom">
                 <div :class="$style.copyright">
                     <span>Copyright © 2023 3legant. All rights reserved</span>
-                    <NuxtLink :class="$style.qwe">
-                        Privacy Policy
-                    </NuxtLink>
-                    <NuxtLink :class="$style.qwe">
-                        Terms of Use
-                    </NuxtLink>
+                    <div :class="$style.copyrightLinks">
+                        <NuxtLink
+                            to="/privacy-policy"
+                            target="_blank"
+                        >
+                            Privacy Policy
+                        </NuxtLink>
+                        <NuxtLink
+                            to="/term-of-use"
+                            target="_blank"
+                        >
+                            Terms of Use
+                        </NuxtLink>
+                    </div>
                 </div>
-                <div :class="$style.social"></div>
+                <div :class="$style.social">
+                    <NuxtLink
+                        to="https://www.instagram.com/"
+                        target="_blank"
+                    >
+                        <svg>
+                            <use href="/svg-sprite/sprite.svg#instagram"/>
+                        </svg>
+                    </NuxtLink>
+                    <NuxtLink
+                        to="https://www.facebook.com/"
+                        target="_blank"
+                    >
+                        <svg>
+                            <use href="/svg-sprite/sprite.svg#facebook"/>
+                        </svg>
+                    </NuxtLink>
+                    <NuxtLink
+                        to="https://www.youtube.com/"
+                        target="_blank"
+                    >
+                        <svg>
+                            <use href="/svg-sprite/sprite.svg#youtube"/>
+                        </svg>
+                    </NuxtLink>
+
+                </div>
             </div>
         </div>
     </footer>
@@ -71,36 +105,51 @@
     color: $neutral-03;
 }
 
+.wrapper a {
+    color: $neutral-01;
+    transition: opacity $transition-duration;
+
+    &:hover {
+        opacity: .6;
+    }
+}
+
 .content {
-    padding: 80px 0 32px;
+    padding-top: 48px;
+    padding-bottom: 48px;
+
+    @include respond-to(d) {
+        padding: 80px 0 32px;
+    }
 }
 
 .top {
     display: flex;
+    flex-direction: column;
     justify-content: space-between;
-    margin-bottom: 50px;
+    gap: 40px;
+    margin-bottom: 40px;
+
+    @include respond-to(d) {
+        flex-direction: row;
+        margin-bottom: 50px;
+    }
 }
 
-.bottom {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 16px 0;
-    border-top: 0.5px solid $neutral-04;
-    font-size: 12px;
-}
-
-.copyright {
-    display: flex;
-    gap: 28px;
-}
-
-$company-info-gap: 32px;
+$company-info-gap_m: 16px;
+$company-info-gap_d: 32px;
 
 .companyInfo {
     display: flex;
-    gap: $company-info-gap;
+    flex-direction: column;
+    gap: $company-info-gap_m;
+    align-items: center;
     font-size: 14px;
+
+    @include respond-to(d) {
+        flex-direction: row;
+        gap: $company-info-gap_d;
+    }
 }
 
 .companyLogo {
@@ -116,43 +165,99 @@ $company-info-gap: 32px;
 
 .companyType {
     display: flex;
+    flex-direction: column;
     align-items: center;
+    gap: $company-info-gap_m;
 
     &::before {
         content: "";
         display: block;
-        width: 1px;
-        height: 100%;
+        width: 24px;
+        height: 1px;
         background: $neutral-04;
-        margin-right: $company-info-gap;
+    }
+
+    @include respond-to(d) {
+        flex-direction: row;
+        gap: $company-info-gap_d;
+
+        &::before {
+            width: 1px;
+            height: 24px;
+        }
     }
 }
 
 .nav {
     display: flex;
     justify-content: center;
+    align-items: center;
+    flex-direction: column;
     gap: 40px;
     list-style: none;
 
-    a {
-        color: $neutral-01;
-        transition: color $transition-duration;
-
-        &:hover {
-            color: rgba($neutral-03, 0.6);
-        }
+    @include respond-to(d) {
+        height: 100%;
+        flex-direction: row;
     }
 }
 
-.qwe {
+.bottom {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    align-items: center;
+    gap: 32px;
+    padding: 24px 0;
+    border-top: 0.5px solid $neutral-04;
+    font-size: 12px;
+
+    @include respond-to(d) {
+        flex-direction: row;
+        padding: 16px 0;
+    }
+}
+
+.copyright {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 28px;
+
+    @include respond-to(d) {
+        flex-direction: row;
+    }
+}
+
+.copyrightLinks {
+    display: flex;
+    gap: 28px;
+    order: -1;
     color: $neutral-01;
     font-weight: 600;
+
+    @include respond-to(d) {
+        order: 0;
+    }
 }
 
 .social {
-    width: 45px;
-    height: 24px;
-    background: $neutral-03;
-}
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    order: -2;
 
+    a {
+        display: flex;
+    }
+
+    svg {
+        width: 24px;
+        height: 24px;
+    }
+
+    @include respond-to(d) {
+        order: 0;
+    }
+}
 </style>

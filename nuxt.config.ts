@@ -30,14 +30,14 @@ export default defineNuxtConfig({
     },
 
     css: [
-        '~/assets/main.scss'
+        '~/assets/scss/main.scss'
     ],
 
     vite: {
         css: {
             preprocessorOptions: {
                 scss: {
-                    additionalData: '@use "~/assets/_variables.scss" as *;'
+                    additionalData: '@use "~/assets/scss/_variables.scss" as *;'
                 }
             }
         },

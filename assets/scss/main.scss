@@ -23,11 +23,16 @@ a {
 
 button {
     cursor: pointer;
+
+    &:disabled {
+        cursor: not-allowed;
+    }
 }
 
 .container {
     width: 100%;
     padding: 0 32px;
+    margin: 0 auto;
 
     @media (min-width: 1250px) {
         max-width: 1120px;

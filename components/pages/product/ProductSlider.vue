@@ -9,7 +9,7 @@ defineProps<{
     product: Product,
 }>();
 
-const imgArrLength = ref(2);
+const imgArrLength = ref(5);
 
 const navigationBtnPrev = useTemplateRef<HTMLElement>('navigation-btn-prev');
 const navigationBtnNext = useTemplateRef<HTMLElement>('navigation-btn-next');
@@ -20,6 +20,7 @@ const swiperWrapper = useTemplateRef<HTMLElement>('swiper-wrapper');
 
 onMounted(() => {
     swiper.value = new Swiper(swiperWrapper.value as HTMLElement, {
+        slidesPerView: 'auto',
         modules: [Navigation],
         navigation: {
             prevEl: navigationBtnPrev.value,
@@ -35,17 +36,18 @@ onMounted(() => {
 </script>
 
 <template>
-    <div :class="[$style.productSlider]">
+    <div :class="[$style.ProductSlider]">
         <div
             ref="swiper-wrapper"
-            :class="['swiper', $style.wrapper]"
+            class="swiper"
         >
             <div :class="['swiper-wrapper']">
                 <div
                     v-for="item in imgArrLength"
-                    :class="['swiper-slide']"
+                    :class="[$style.slide]"
+                    class="swiper-slide"
                 >
-                    <img src="/public/images/products/bamboo-basket.png" :alt="`picture of ${product.title}`">
+                    <img src="/public/images/products/tray-table.png" :alt="`picture of ${product.title}`">
                 </div>
             </div>
             <div
@@ -71,27 +73,46 @@ onMounted(() => {
                 />
             </div>
         </div>
-        <div :class="$style.productBadge">
+        <div :class="$style.badge">
             <ProductBadge :product="product"/>
         </div>
     </div>
 </template>
 
 <style module lang="scss">
-.productSlider {
+.ProductSlider {
     position: relative;
     width: 100%;
-    height: 414px;
+    height: 500px;
     background: $neutral-02;
 
     img {
         width: 100%;
         height: 100%;
     }
+
+    :global(.swiper) {
+        height: 100%;
+    }
+
+    :global(.swiper-pagination) {
+        @include respond-to(l) {
+            display: none;
+        }
+    }
 }
 
-.productBadge {
+.slide {
+    width: 100%;
+
+    img {
+        object-fit: contain;
+    }
+}
+
+.badge {
     position: absolute;
+    z-index: 1;
     top: 24px;
     left: 24px;
     display: flex;

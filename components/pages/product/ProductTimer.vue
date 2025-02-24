@@ -4,13 +4,13 @@ const props = defineProps<{
 }>();
 
 const parsedExpiresDate = computed(() => Date.parse(props.expire));
+// TODO Вынести getLeftTime в отдельный композабл
 const getLeftTime = (endDate: number) => {
     const day = 24 * 60 * 60 * 1000;
     const hour = 60 * 60 * 1000;
     const minute = 60 * 1000;
     const second = 1000;
 
-    // TODO endData постоянно парсится
     const left = endDate - Date.now();
 
     if (left < 0) {

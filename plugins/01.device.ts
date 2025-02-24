@@ -13,11 +13,14 @@ export default defineNuxtPlugin(nuxtApp => {
     };
 
     if (import.meta.client) {
-        window.addEventListener('resize', () => {
+        const getBreakpoints = () => {
             result.value.tablet = window.matchMedia(`(min-width: ${ breakpoints.tablet }px)`).matches;
             result.value.laptop = window.matchMedia(`(min-width: ${ breakpoints.laptop }px)`).matches;
             result.value.desktop = window.matchMedia(`(min-width: ${ breakpoints.desktop }px)`).matches;
-        });
+        }
+
+        getBreakpoints()
+        window.addEventListener('resize', getBreakpoints);
     }
 
     return {

@@ -8,18 +8,13 @@ import type { BreadcrumbList } from '~/@types/ui/breadcrumbs';
 
 const route = useRoute();
 
-// TODO сделать обработку 404
-
-const {data: product} = await useAsyncData<Product>(async () => {
-    const data = await $fetch(`/api/product/${ route.params.id }`);
-    return data;
-}, {
-    lazy: true,
+const { data: product } = await useAsyncData<Product>(async () => {
+    return await $fetch(`/api/product/${ route.params.id }`);
 });
 
-const {data: cards} = await useFetch('/api/products');
+const { data: cards } = await useFetch('/api/products');
 
-const path = computed<BreadcrumbList>(() => [
+const path: BreadcrumbList = [
     {
         title: 'Home',
         link: '/',
@@ -30,9 +25,9 @@ const path = computed<BreadcrumbList>(() => [
     },
     {
         title: product.value.title,
-        link: `/shop/product/${product.value.id}`
-    }
-])
+        link: `/shop/product/${ product.value.id }`,
+    },
+];
 </script>
 
 <template>
@@ -46,8 +41,10 @@ const path = computed<BreadcrumbList>(() => [
             :product="product"
         />
         <PageSection
+            v-if="cards?.length"
             title="You might also like"
             link-title="More Products"
+            title-size="small"
             href="/shop"
             is-show-footer
             :class="$style.productListWrapper"
@@ -59,7 +56,7 @@ const path = computed<BreadcrumbList>(() => [
 
 <style module lang="scss">
 .breadcrumbs {
-    margin-bottom: 16px;
+    margin: 16px 0;
 }
 
 .productListWrapper {

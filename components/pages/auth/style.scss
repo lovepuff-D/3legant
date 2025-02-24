@@ -1,0 +1,45 @@
+.wrapper {
+    padding: 40px 32px;
+
+    @include respond-to(t) {
+        width: calc(456px + 88px);
+        padding-left: 88px;
+    }
+}
+
+.header {
+    margin-bottom: 32px;
+}
+
+.title {
+    @include text(heading-4);
+}
+
+.subTitle {
+    margin-top: 24px;
+    color: $neutral-04;
+
+    @include text(body-2);
+
+    a {
+        color: $green;
+    }
+}
+
+.form {
+    margin-bottom: 32px;
+
+    & > *:not(:last-child) {
+        margin-bottom: 32px;
+    }
+}
+
+.option {
+    display: flex;
+    align-items: center;
+    margin-bottom: 32px;
+
+    &._spaceBetween {
+        justify-content: space-between;
+    }
+}

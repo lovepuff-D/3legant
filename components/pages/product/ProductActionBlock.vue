@@ -1,14 +1,21 @@
 <script setup lang="ts">
 import { useCounter } from '~/composables/shared/useCounter';
+import VButton from '~/components/ui/VButton.vue';
+import { EColor, ESize } from '~/@types/ui/types';
+import { useDevice } from '~/composables/shared/useDevice';
 
 const props = defineProps<{
     counterMax: number
 }>();
 
+const { isDesktop } = useDevice();
+
 const { isMin, isMax, count, increase, decrease } = useCounter(1, props.counterMax, 1);
 
+// TODO Заменить кнопки на VButton
+
 const addToCartValue = ref(false);
-const addToCartText = computed(() => addToCartValue.value ? 'Remove from cart' : 'Add to cart')
+const addToCartText = computed(() => addToCartValue.value ? 'Remove' : 'Add to Cart')
 const addToCart = () => {
     addToCartValue.value = !addToCartValue.value;
     console.log('was added/removed: ', count.value);
@@ -39,52 +46,29 @@ const addToFavorite = () => {
                 </button>
             </div>
 
-            <button
-                :class="[$style.wishlistBtn, $style.btn, $style._white, { [$style._active]: favoriteBtnValue }]"
+            <VButton
+                :class="[$style.wishlistBtn, { [$style._active]: favoriteBtnValue }]"
+                :size="isDesktop ? ESize.medium : ESize.small"
+                :color="EColor.white"
+                icon-name-before-content="heart-icon"
                 @click="addToFavorite"
             >
-                <svg>
-                    <use href="/svg-sprite/sprite.svg#heart-icon"/>
-                </svg>
                 <span>Wishlist</span>
-            </button>
+            </VButton>
         </div>
-        <button
-            :class="[$style.addBtn, $style.btn]"
+        <VButton
+            :class="$style.addBtn"
+            :size="isDesktop ? ESize.medium : ESize.small"
             @click="addToCart"
         >
             {{ addToCartText }}
-        </button>
+        </VButton>
     </div>
 </template>
 
 <style module lang="scss">
 .top {
     display: flex;
-}
-
-.btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    padding: 4px 20px;
-    background: $neutral-07;
-    border-radius: 4px;
-    color: $base;
-
-    @include text(button-xs, 500);
-
-    &._white {
-        border: 1px solid $neutral-07;
-        background: none;
-        color: $neutral-07;
-    }
-
-    svg {
-        width: 16px;
-        height: 16px;
-    }
 }
 
 .counter {
@@ -95,6 +79,16 @@ const addToFavorite = () => {
     width: 80px;
     background: #F5F5F5;
     border-radius: 4px;
+    font-size: 12px;
+    line-height: 20px;
+
+    @include respond-to(d) {
+        gap: 24px;
+        width: 127px;
+        border-radius: 8px;
+        font-size: 16px;
+        line-height: 26px;
+    }
 }
 
 .counterBtn {
@@ -103,9 +97,16 @@ const addToFavorite = () => {
     justify-content: center;
     width: 16px;
     height: 16px;
+    transition: opacity $transition-duration;
 
     &._disabled {
         opacity: 0.5;
+    }
+
+    @include respond-to(d) {
+        width: 20px;
+        height: 20px;
+        font-size: 20px;
     }
 }
 
@@ -117,9 +118,19 @@ const addToFavorite = () => {
     flex: 1;
     margin-left: 8px;
 
+    //&:hover {
+    //    svg {
+    //        stroke: $base;
+    //    }
+    //}
+
     svg {
+        width: 16px;
+        height: 16px;
         fill: transparent;
         stroke: $neutral-07;
+
+        transition: all $transition-duration;
     }
 
     &._active {

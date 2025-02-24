@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { Product } from '~/@types/product';
-import RenderlessCounter from '~/components/shared/RenderlessCounter.vue';
 import RatingIndicator from '~/components/shared/RatingIndicator.vue';
 import { useProductHelper } from '~/composables/product/useProductHelper';
 import { useCounter } from '~/composables/shared/useCounter';
@@ -15,7 +14,7 @@ const { isShowOldPrice } = useProductHelper(props.card);
 const style = useCssModule();
 
 // TODO возможно стоит переписать на синтаксис объекта т.к мб не будет доступа через $route.params.id
-const routeToProductPage = computed(() => `shop/product/${ props.card.id }`);
+const routeToProductPage = computed(() => `/shop/product/${ props.card.id }`);
 
 const isShowDiscount = computed(() => {
     if (!props.card.discount) {

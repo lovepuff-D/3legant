@@ -11,15 +11,21 @@ import ProductSlider from '~/components/pages/product/ProductSlider.vue';
 
 const props = defineProps<{
     product: Product,
-}>()
+}>();
 
 const route = useRoute();
 const router = useRouter();
 
 const { isShowOldPrice, isDiscountActive } = useProductHelper(props.product);
 
-const getInitialActiveColor = () => props.product.available_colors.find(item => item.color === route.query.color)?.color ?? props.product.available_colors[0].color;
-const activeProductColor = ref(getInitialActiveColor())
+const getInitialActiveColor = () => {
+    if (!props.product.available_colors?.length) {
+        return null;
+    }
+
+    return props.product.available_colors?.find(item => item.color === route.query.color)?.color ?? props.product.available_colors[0].color;
+};
+const activeProductColor = ref(getInitialActiveColor());
 const changeActiveProductColor = (colorItem: AvailableColorItem) => {
     if (!colorItem.available || activeProductColor.value === colorItem.color) {
         return;
@@ -30,9 +36,9 @@ const changeActiveProductColor = (colorItem: AvailableColorItem) => {
         query: {
             ...route.query,
             color: colorItem.color,
-        }
-    })
-}
+        },
+    });
+};
 </script>
 
 <template>
@@ -61,21 +67,22 @@ const changeActiveProductColor = (colorItem: AvailableColorItem) => {
                 </div>
             </div>
             <div :class="$style.divider"/>
-            <template v-if="isDiscountActive">
-                <div>
-                    <div>Offer expires in:</div>
-                    <ProductTimer :expire="product.discount!.expires"/>
-                </div>
-                <div :class="$style.divider"/>
-            </template>
-            <div :class="$style.productCharacteristics">
-                <div>
+            <div v-if="isDiscountActive">
+                <div>Offer expires in:</div>
+                <ProductTimer :expire="product.discount!.expires"/>
+            </div>
+            <div :class="$style.divider"/>
+            <div
+                v-if="product.measurements || product.available_colors?.length"
+                :class="$style.productCharacteristics"
+            >
+                <div v-if="product.measurements">
                     <div :class="$style.productCharacteristicsTitle">
                         Measurements
                     </div>
                     <div>{{ product.measurements }}</div>
                 </div>
-                <div>
+                <div v-if="product.available_colors?.length">
                     <div :class="$style.productCharacteristicsTitle">
                         Choose Color
                     </div>
@@ -122,11 +129,12 @@ const changeActiveProductColor = (colorItem: AvailableColorItem) => {
             </dl>
             <div :class="$style.expanderList">
                 <ExpansionPanel v-if="product.additional_info?.details || product.additional_info?.packaging.length">
-                    <ExpansionPanelTitle>Additional  Info</ExpansionPanelTitle>
+                    <ExpansionPanelTitle>Additional Info</ExpansionPanelTitle>
                     <ExpansionPanelBody>
                         <div
                             v-if="product.additional_info?.details"
-                            :class="$style.expansionBodyBlock">
+                            :class="$style.expansionBodyBlock"
+                        >
                             <div :class="$style.expansionBodyTitle">Details</div>
                             <div :class="$style.expansionBodyValue">{{ product.additional_info.details }}</div>
                         </div
@@ -184,7 +192,7 @@ const changeActiveProductColor = (colorItem: AvailableColorItem) => {
     gap: 16px;
     margin-bottom: 80px;
 
-    @include respond-to(d) {
+    @include respond-to(l) {
         flex-direction: row;
         gap: 64px;
     }
@@ -195,6 +203,13 @@ const changeActiveProductColor = (colorItem: AvailableColorItem) => {
     height: 1px;
     margin: 24px 0;
     background: $neutral-02;
+
+    & + & {
+        display: none;
+    }
+    @include respond-to(l) {
+        margin: 16px 0;
+    }
 }
 
 .productBaseInfo {
@@ -282,6 +297,10 @@ const changeActiveProductColor = (colorItem: AvailableColorItem) => {
 .additionalCharacteristics {
     text-transform: capitalize;
     @include text(caption-2);
+
+    @include respond-to(d) {
+        @include text(caption-1);
+    }
 }
 
 .additionalCharacteristicsRow {
@@ -303,7 +322,7 @@ const changeActiveProductColor = (colorItem: AvailableColorItem) => {
 }
 
 .expansionBodyBlock {
-    &:not(:last-child){
+    &:not(:last-child) {
         margin-bottom: 16px;
     }
 }
@@ -317,5 +336,9 @@ const changeActiveProductColor = (colorItem: AvailableColorItem) => {
 
 .expansionBodyValue {
     @include text(caption-2);
+
+    @include respond-to(d) {
+        @include text(caption-1);
+    }
 }
 </style>

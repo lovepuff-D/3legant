@@ -1,3 +1,6 @@
+import { types } from 'sass';
+import Null = types.Null;
+
 export interface ProductAdditionalInfo {
     details: string;
     packaging: string[];
@@ -43,18 +46,18 @@ export interface Product {
     title: string;
     description: string;
     is_new: boolean,
-    additional_info: ProductAdditionalInfo | null;
-    questions: ProductQuestion[] | null;
+    additional_info: Nullable<ProductAdditionalInfo>;
+    questions: Nullable<ProductQuestion[]>;
     price: number;
     old_price: number;
     rating: number;
     picture: string;
-    discount: ProductDiscount | null;
-    measurements: string | null;
-    available_colors: AvailableColorItem[];
+    discount: Nullable<ProductDiscount>;
+    measurements: Nullable<string>;
+    available_colors: Nullable<AvailableColorItem[]>;
     balance: number;
     sku: number;
     category: string[];
     review_count: number;
-    reviews: ProductReview[] | null;
+    reviews: Nullable<ProductReview[]>;
 }
