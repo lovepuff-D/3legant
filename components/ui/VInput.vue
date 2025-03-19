@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { InputHTMLAttributes, InputTypeHTMLAttribute } from '@vue/runtime-dom';
+import type { InputHTMLAttributes, InputTypeHTMLAttribute } from 'vue';
 
 withDefaults(defineProps<{
     placeholder?: HTMLInputElement['placeholder'],
@@ -13,7 +13,7 @@ withDefaults(defineProps<{
 })
 
 const emit = defineEmits<{
-    'icon-after-content-click': [void],
+    'icon-after-content-click': [],
 }>();
 
 const modelValue = defineModel<string>({ required: true })

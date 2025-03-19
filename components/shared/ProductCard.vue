@@ -1,9 +1,13 @@
-<script setup lang="ts">
+<script
+    setup
+    lang="ts"
+>
 import type { Product } from '~/@types/product';
 import RatingIndicator from '~/components/shared/RatingIndicator.vue';
 import { useProductHelper } from '~/composables/product/useProductHelper';
 import { useCounter } from '~/composables/shared/useCounter';
 import ProductBadge from '~/components/shared/ProductBadge.vue';
+import VIcon from '~/components/ui/VIcon.vue';
 
 const props = defineProps<{
     card: Product
@@ -13,23 +17,8 @@ const { isShowOldPrice } = useProductHelper(props.card);
 
 const style = useCssModule();
 
-// TODO возможно стоит переписать на синтаксис объекта т.к мб не будет доступа через $route.params.id
 const routeToProductPage = computed(() => `/shop/product/${ props.card.id }`);
 
-const isShowDiscount = computed(() => {
-    if (!props.card.discount) {
-        return false;
-    }
-
-    if (!props.card.discount.value) {
-        return false;
-    }
-
-    const nowDate = new Date().getTime();
-    const expiresDate = new Date(props.card.discount.expires).getTime();
-
-    return expiresDate > nowDate;
-});
 const altImg = computed(() => `Picture of product: ${ props.card.title }`);
 
 const isProductFavorite = ref(false);
@@ -39,14 +28,23 @@ const favoriteBtnClassList = computed(() => [
         [style._added]: isProductFavorite.value,
     },
 ]);
-const onClickFavoriteBtn = (evt: Event) => {
-    evt.preventDefault();
+const onClickFavoriteBtn = async (event: Event) => {
+    const currentTarget = event.currentTarget as HTMLElement
+    event.preventDefault();
     isProductFavorite.value = !isProductFavorite.value;
+    await nextTick();
+    currentTarget?.classList.add(style._animationActive);
+    // TODO подумать как лучше обрабатывать анимацию на кликах
+    const animationEnd = () => {
+        currentTarget?.classList.remove(style._animationActive);
+        currentTarget.removeEventListener('animationend', animationEnd)
+    }
+    currentTarget.addEventListener('animationend', animationEnd)
 };
 
 const { isMax, count, increase, decrease } = useCounter(0, props.card.balance);
 const addBtnClassList = computed(() => [
-    style.addBtn,
+    style.actionBtn,
     {
         [style._added]: count.value > 0,
     },
@@ -58,6 +56,7 @@ const onClickAddBtn = (evt: Event) => {
     }
     count.value++;
 };
+
 </script>
 
 <template>
@@ -70,23 +69,16 @@ const onClickAddBtn = (evt: Event) => {
                     :alt="altImg"
                     :class="$style.img"
                 >
-                <svg
-                    v-else
-                    :class="$style.noImgIcon"
-                >
-                    <use href="/svg-sprite/sprite.svg#no-image"/>
-                </svg>
+                <VIcon v-else name="no-image"/>
                 <div :class="$style.leftSide">
                     <ProductBadge :product="card"/>
                 </div>
                 <div :class="$style.rightSide">
                     <button
-                        @click="onClickFavoriteBtn"
                         :class="favoriteBtnClassList"
+                        @click="onClickFavoriteBtn"
                     >
-                        <svg>
-                            <use href="/svg-sprite/sprite.svg#heart-icon"/>
-                        </svg>
+                        <VIcon name="heart"/>
                     </button>
                 </div>
                 <div :class="$style.bottomSide">
@@ -115,7 +107,7 @@ const onClickAddBtn = (evt: Event) => {
                                     +
                                 </div>
                             </div>
-                            <span v-else>
+                            <span v-else :class="$style.addBtn">
                                 Add to cart
                             </span>
                         </Transition>
@@ -146,7 +138,10 @@ const onClickAddBtn = (evt: Event) => {
     </NuxtLink>
 </template>
 
-<style module lang="scss">
+<style
+    module
+    lang="scss"
+>
 .ProductCard {
     min-width: 231px;
 }
@@ -165,7 +160,7 @@ const onClickAddBtn = (evt: Event) => {
             opacity: 1;
         }
 
-        .addBtn {
+        .actionBtn {
             opacity: 1;
         }
     }
@@ -217,28 +212,52 @@ const onClickAddBtn = (evt: Event) => {
     background: $base;
     box-shadow: 0 0 13px -10px rgba(0, 0, 0, 0.75);
     transition: opacity $transition-duration;
-    opacity: 0;
+    opacity: 1;
+
+    &._animationActive {
+        svg {
+            animation: scale 500ms ease;
+        }
+
+        @keyframes scale {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(0.7);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+    }
 
     svg {
-        width: 100%;
-        height: 100%;
-
-        stroke: $neutral-05;
-        stroke-width: 1px;
+        path {
+            transition: fill $transition-duration, stroke $transition-duration;
+        }
     }
 
     &._added {
-        opacity: 1;
+        svg {
+            path {
+                fill: $neutral-07;
+                stroke: $neutral-07;
+            }
+        }
     }
 }
 
-.addBtn {
+.actionBtn {
     width: 80%;
+    height: 46px;
     padding: 8px;
     background: $neutral-07;
     border-radius: 8px;
     color: $neutral-01;
-    opacity: 0;
+    opacity: 1;
     transition: opacity $transition-duration;
 
     @include text(button-s, 500);
@@ -246,6 +265,12 @@ const onClickAddBtn = (evt: Event) => {
     &._added {
         opacity: 1;
     }
+}
+
+.addBtn,
+.counter {
+    position: absolute;
+    inset: 0;
 }
 
 .counter {

@@ -3,9 +3,7 @@ import type { AvailableColorItem, Product } from '~/@types/product';
 import RatingIndicator from '~/components/shared/RatingIndicator.vue';
 import { useProductHelper } from '~/composables/product/useProductHelper';
 import ProductActionBlock from '~/components/pages/product/ProductActionBlock.vue';
-import ExpansionPanel from '~/components/ui/expansion-panel/ExpansionPanel.vue';
-import ExpansionPanelBody from '~/components/ui/expansion-panel/ExpansionPanelBody.vue';
-import ExpansionPanelTitle from '~/components/ui/expansion-panel/ExpansionPanelTitle.vue';
+import ExpansionPanel from '~/components/ui/ExpansionPanel.vue';
 import ProductTimer from '~/components/pages/product/ProductTimer.vue';
 import ProductSlider from '~/components/pages/product/ProductSlider.vue';
 
@@ -129,8 +127,8 @@ const changeActiveProductColor = (colorItem: AvailableColorItem) => {
             </dl>
             <div :class="$style.expanderList">
                 <ExpansionPanel v-if="product.additional_info?.details || product.additional_info?.packaging.length">
-                    <ExpansionPanelTitle>Additional Info</ExpansionPanelTitle>
-                    <ExpansionPanelBody>
+                    <template #title>Additional Info</template>
+                    <template #body>
                         <div
                             v-if="product.additional_info?.details"
                             :class="$style.expansionBodyBlock"
@@ -152,11 +150,11 @@ const changeActiveProductColor = (colorItem: AvailableColorItem) => {
                                 {{ packaging }}
                             </div>
                         </div>
-                    </ExpansionPanelBody>
+                    </template>
                 </ExpansionPanel>
                 <ExpansionPanel v-if="product.questions?.length">
-                    <ExpansionPanelTitle>Questions</ExpansionPanelTitle>
-                    <ExpansionPanelBody>
+                    <template #title>Questions</template>
+                    <template #body>
                         <div
                             v-for="(question, index) in product.questions"
                             :key="index"
@@ -165,7 +163,7 @@ const changeActiveProductColor = (colorItem: AvailableColorItem) => {
                             <div :class="$style.expansionBodyTitle">{{ question.title }}</div>
                             <div :class="$style.expansionBodyValue">{{ question.answer }}</div>
                         </div>
-                    </ExpansionPanelBody>
+                    </template>
                 </ExpansionPanel>
                 <!--<ExpansionPanel v-if="product.reviews?.length">-->
                 <!--    <ExpansionPanelTitle>Reviews ({{ product.review_count }})</ExpansionPanelTitle>-->

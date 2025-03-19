@@ -1,37 +1,52 @@
 <script setup lang="ts">
-import type { AdvantageCard as AdvantageCardInterface } from '~/components/pages/types/advantages';
+import { $fetch } from 'ofetch';
 
-const cards = ref<AdvantageCardInterface[]>([
-    {
-        title: 'Free Shipping',
-        description: 'Order above $200',
-        iconUrl: '/_nuxt/public/images/advantages/fast-delivery.svg',
-    },
-    {
-        title: 'Money-back',
-        description: '30 days guarantee',
-        iconUrl: '/_nuxt/public/images/advantages/money.svg',
-    },
-    {
-        title: 'Secure Payments',
-        description: 'Secured by Stripe',
-        iconUrl: '/_nuxt/public/images/advantages/lock.svg',
-    },
-    {
-        title: '24/7 Support',
-        description: 'Phone and Email support',
-        iconUrl: '/_nuxt/public/images/advantages/call.svg',
-    },
-]);
+const { $fetchData } = useNuxtApp();
+
+console.log('compoennt 1');
+
+const { data: test } = await useAsyncData(async () => {
+    const res = await new Promise(res => {
+        setTimeout(() => {
+            res('qwe');
+        }, 1000);
+    })
+    const res2 = await new Promise(res => {
+        setTimeout(() => {
+            res('qwe');
+        }, 1000);
+    })
+    return res + res2;
+});
+
+console.log('compoennt 1.5', test.value);
+
+const { data: cards } = await useAsyncData(async () => {
+    const res1 = await $fetch('api/advantages');
+    console.log('isServer1', res1);
+    const res2 = await $fetchData.advantages.getAdvantages();
+    console.log('isServer2', res2);
+    return await $fetchData.advantages.getAdvantages();
+});
+
+console.log('compoennt 2', cards.value);
+
+onMounted(() => {
+    $fetchData.advantages.getAdvantages();
+})
 </script>
 
 <template>
     <div :class="$style.wrapper">
         <div
-            v-for="card in cards"
+            v-for="(card, index) in cards"
+            :key="index"
             :class="$style.card"
         >
-            <img :class="$style.icon" :src="card.iconUrl" alt="icon of advantage"/>
+            <div
+                :class="$style.icon"
+                v-html="card.icon"
+            />
             <p :class="$style.title">{{ card.title }}</p>
             <p :class="$style.description">{{ card.description }}</p>
         </div>

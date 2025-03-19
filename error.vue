@@ -49,6 +49,7 @@ const statusMessage = computed(() => {
     justify-content: center;
     gap: 32px;
     max-width: 350px;
+    min-height: 400px;
     height: 100%;
 }
 

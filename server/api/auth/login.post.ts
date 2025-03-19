@@ -17,5 +17,5 @@ export default defineEventHandler(async (event) => {
         result: false,
     };
 
-    return foundLogin.password === body?.password ? { errorMessage: null, result: true } : { errorType: 'password', errorMessage: 'Incorrect Password', result: false }
+    return foundLogin.password === body?.password ? { errorType: null, errorMessage: null, result: true } : { errorType: 'password', errorMessage: 'Incorrect Password', result: false }
 })

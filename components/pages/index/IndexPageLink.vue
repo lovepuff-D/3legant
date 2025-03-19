@@ -1,5 +1,10 @@
-<script setup lang="ts">
+<script
+    setup
+    lang="ts"
+>
 import type { RouterLinkProps } from '#vue-router';
+import { EIconSize } from '~/@types/ui/icon';
+import VIcon from '~/components/ui/VIcon.vue';
 
 defineProps<{
     href: RouterLinkProps['to']
@@ -7,22 +12,27 @@ defineProps<{
 </script>
 
 <template>
-    <NuxtLink :to="href" :class="$style.wrapper">
+    <NuxtLink
+        :to="href"
+        :class="$style.wrapper"
+    >
         <div :class="$style.link">
             <span><slot/></span>
             <span>
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M3.33331 8H12.6666" stroke="#141718" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M8.66669 12L12.6667 8" stroke="#141718" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M8.66669 4L12.6667 8" stroke="#141718" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
+            <VIcon
+                name="arrow-right"
+                :size="EIconSize.custom"
+            />
         </span>
         </div>
-        <div :class="$style.line"></div>
+        <div :class="$style.line"/>
     </NuxtLink>
 </template>
 
-<style module lang="scss">
+<style
+    module
+    lang="scss"
+>
 .wrapper {
     &:hover {
         .line {
@@ -40,6 +50,17 @@ defineProps<{
 
     svg {
         display: flex;
+        width: 16px;
+        height: 16px;
+
+        path {
+            stroke-width: 1.5;
+        }
+
+        @include respond-to(d) {
+            width: 20px;
+            height: 20px;
+        }
     }
 }
 

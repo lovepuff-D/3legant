@@ -1,19 +1,20 @@
 <script setup lang="ts">
+import VIcon from '~/components/ui/VIcon.vue';
+import { EIconSize } from '~/@types/ui/icon';
 </script>
 
 <template>
     <div class="container">
-        <header :class="[$style.header]">
+        <header :class="$style.header">
             <div :class="$style.leftSide">
                 <button :class="$style.menu">
-                    <svg>
-                        <use href="/svg-sprite/sprite.svg#burger-icon"/>
-                    </svg>
+                    <VIcon name="burger-menu"/>
                 </button>
                 <NuxtLink to="/" :class="$style.companyLogo">
-                    <svg>
-                        <use href="/svg-sprite/sprite.svg#company-logo"/>
-                    </svg>
+                    <VIcon
+                        name="company-logo"
+                        :size="EIconSize.custom"
+                    />
                 </NuxtLink>
             </div>
             <nav :class="$style.navWrapper">
@@ -53,15 +54,11 @@
                     to="/auth/sign-in"
                     :class="$style.svgBtn"
                 >
-                    <svg>
-                        <use href="/svg-sprite/sprite.svg#account"/>
-                    </svg>
+                    <VIcon name="user-circle"/>
                 </NuxtLink>
                 <!--TODO Вынести в компонент, эта штука используется в мобилке-->
                 <button :class="[$style.svgBtn, $style.cartBtn]">
-                    <svg>
-                        <use href="/svg-sprite/sprite.svg#cart"/>
-                    </svg>
+                    <VIcon name="shopping-bag"/>
                     <span :class="$style.cartQuantity">2</span>
                 </button>
             </div>
@@ -80,12 +77,9 @@
     & > * {
         flex: 1;
     }
-}
 
-.menu {
-    svg {
-        width: 24px;
-        height: 24px;
+    svg:hover {
+        color: $neutral-04;
     }
 }
 
@@ -100,12 +94,18 @@
     svg {
         width: 105px;
         height: 24px;
+
+        path#svg-company-logo-dot {
+            fill: $neutral-04;
+        }
     }
 }
 
 .leftSide {
     display: flex;
+    align-items: center;
     justify-content: start;
+    gap: 4px;
 }
 
 .navWrapper {
@@ -116,22 +116,10 @@
     display: flex;
     justify-content: right;
     gap: 16px;
-
-    svg {
-        width: 24px;
-        height: 24px;
-    }
-
 }
 
 .svgBtn {
     display: flex;
-
-    svg {
-        width: 24px;
-        height: 24px;
-        fill: white;
-    }
 }
 
 .cartBtn {

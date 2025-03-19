@@ -42,8 +42,8 @@ export default defineEventHandler(async (event) => {
     };
 
     return {
-        errorType: '',
-        errorMessage: '',
+        errorType: null,
+        errorMessage: null,
         result: true,
     };
 })

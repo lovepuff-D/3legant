@@ -1,6 +1,6 @@
 <script setup lang="ts">
 
-import IndexPageLink from '~/components/pages/components/IndexPageLink.vue';
+import IndexPageLink from '~/components/pages/index/IndexPageLink.vue';
 </script>
 
 <template>

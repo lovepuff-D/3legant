@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import Hero from '~/components/pages/index/Hero.vue';
-import Categories from '~/components/pages/index/Categories.vue';
-import Advantages from '~/components/pages/index/Advantages.vue';
-import SaleBanner from '~/components/pages/index/SaleBanner.vue';
+import HeroBlock from '~/components/pages/index/HeroBlock.vue';
+import CategoriesBlock from '~/components/pages/index/CategoriesBlock.vue';
+import AdvantagesBlock from '~/components/pages/index/AdvantagesBlock.vue';
+import SaleBannerBlock from '~/components/pages/index/SaleBannerBlock.vue';
 import PageSection from '~/components/pages/index/layout/PageSection.vue';
 import ProductList from '~/components/shared/ProductList.vue';
 
@@ -13,10 +13,10 @@ const { data: cards } = await useFetch('/api/products')
 <template>
     <div>
         <section class="container">
-            <Hero/>
+            <HeroBlock/>
         </section>
         <section class="container">
-            <Categories/>
+            <CategoriesBlock/>
         </section>
         <section
             v-if="cards"
@@ -33,10 +33,10 @@ const { data: cards } = await useFetch('/api/products')
             </PageSection>
         </section>
         <section class="container">
-            <Advantages :class="$style.advantages"/>
+            <AdvantagesBlock :class="$style.advantages"/>
         </section>
         <!--<div :class="$style.testBlock">Sale</div>-->
-        <SaleBanner/>
+        <SaleBannerBlock/>
         <!--<div :class="$style.testBlock">Subscription</div>-->
     </div>
 </template>

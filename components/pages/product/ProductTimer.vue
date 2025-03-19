@@ -39,7 +39,7 @@ const getLeftTime = (endDate: number) => {
 
 type TLeftType = ReturnType<typeof getLeftTime>
 
-const intervalId = ref<NodeJS.Timeout | null>(null);
+const intervalId = ref<Nullable<NodeJS.Timeout>>(null);
 const timeLeft = ref<TLeftType>({
     days: 0,
     hours: 0,

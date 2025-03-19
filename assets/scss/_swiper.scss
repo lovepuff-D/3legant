@@ -11,30 +11,11 @@
     border-radius: 50%;
     box-shadow: 0 0 10px -1px rgba($neutral-07, 0.2);
     transform: translateY(-50%);
-
-    svg {
-        width: 100%;
-        height: 100%;
-
-        use {
-            transition: stroke $transition-duration;
-            stroke: $neutral-07;
-        }
-    }
-
-    &._small {
-        svg {
-            width: 24px;
-            height: 24px;
-        }
-    }
+    user-select: none;
+    cursor: pointer;
 
     &._prev {
         left: 24px;
-
-        svg {
-            transform: rotate(180deg);
-        }
     }
 
     &._next {
@@ -57,12 +38,6 @@
 
 .swiper-button-disabled {
     color: $neutral-04;
-
-    svg {
-        use {
-            stroke: $neutral-04;
-        }
-    }
 }
 
 .swiper-pagination {

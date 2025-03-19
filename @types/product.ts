@@ -1,6 +1,3 @@
-import { types } from 'sass';
-import Null = types.Null;
-
 export interface ProductAdditionalInfo {
     details: string;
     packaging: string[];

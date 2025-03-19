@@ -1,44 +1,34 @@
 <script setup lang="ts">
 import type { Product } from '~/@types/product';
 import ProductBadge from '~/components/shared/ProductBadge.vue';
-import { Navigation } from 'swiper/modules';
-import Swiper from 'swiper';
-import 'swiper/css';
+import { useSlider } from '~/composables/shared/useSlider';
 
 defineProps<{
     product: Product,
 }>();
 
-const imgArrLength = ref(5);
+const imgArrLength = 5;
 
+const swiperRef = useTemplateRef<HTMLElement>('swiper-ref');
 const navigationBtnPrev = useTemplateRef<HTMLElement>('navigation-btn-prev');
 const navigationBtnNext = useTemplateRef<HTMLElement>('navigation-btn-next');
 
-const swiper = ref<Swiper | null>(null);
-const swiperActiveIndex = ref(0);
-const swiperWrapper = useTemplateRef<HTMLElement>('swiper-wrapper');
+const {
+    sliderActiveIndex,
+    initSlider,
+} = useSlider();
 
 onMounted(() => {
-    swiper.value = new Swiper(swiperWrapper.value as HTMLElement, {
-        slidesPerView: 'auto',
-        modules: [Navigation],
-        navigation: {
-            prevEl: navigationBtnPrev.value,
-            nextEl: navigationBtnNext.value,
-        },
-        on: {
-            slideChange: swiper => {
-                swiperActiveIndex.value = swiper.realIndex;
-            }
-        },
-    });
+    if (swiperRef.value && navigationBtnPrev.value && navigationBtnNext.value) {
+        initSlider(swiperRef.value, { navigationBtnPrev: navigationBtnPrev.value, navigationBtnNext: navigationBtnNext.value });
+    }
 });
 </script>
 
 <template>
     <div :class="[$style.ProductSlider]">
         <div
-            ref="swiper-wrapper"
+            ref="swiper-ref"
             class="swiper"
         >
             <div :class="['swiper-wrapper']">
@@ -69,7 +59,7 @@ onMounted(() => {
             <div :class="['swiper-pagination']">
                 <div
                     v-for="(item, index) in imgArrLength"
-                    :class="['swiper-pagination-dot', { '_active': swiperActiveIndex === index }]"
+                    :class="['swiper-pagination-dot', { '_active': sliderActiveIndex === index }]"
                 />
             </div>
         </div>

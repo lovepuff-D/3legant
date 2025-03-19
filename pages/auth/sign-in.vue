@@ -6,6 +6,9 @@ import { useForm } from 'vee-validate';
 import * as yup from 'yup';
 import { toTypedSchema } from '@vee-validate/yup';
 import AuthRedirected from '~/components/pages/auth/AuthRedirected.vue';
+import VInputPassword from '~/components/ui/VInputPassword.vue';
+import { useAuth } from '~/components/pages/auth/composables/useAuth';
+import successfulAuth from '~/pages/auth/helpers/successfulAuth';
 
 definePageMeta({
     layout: 'auth',
@@ -13,35 +16,23 @@ definePageMeta({
 
 const { $fetchData } = useNuxtApp();
 
-const isActionSucceed = ref(false);
+const { defineFiledConfig, isActionSucceed, isLoading } = useAuth();
 
-const isLoading = ref(false);
-
-const defineFiledConfig = {
-    validateOnModelUpdate: false,
-    validateOnBlur: false,
-    validateOnChange: false,
+enum EFieldTypes {
+    email = 'email',
+    password = 'password',
 }
+
 const { values: formValues, defineField, errors, setFieldError, handleSubmit } = useForm({
     validationSchema: toTypedSchema(yup.object({
         email: yup.string().required().email(),
         password: yup.string().required(),
     }))
 })
-enum EFieldTypes {
-    email = 'email',
-    password = 'password',
-}
+
 const [emailValue] = defineField(EFieldTypes.email, defineFiledConfig);
 const [passwordValue] = defineField(EFieldTypes.password, defineFiledConfig);
-
 const rememberMeCheckbox = ref(false);
-
-const isShowPassword = ref(false);
-const passwordInputType = computed(() => isShowPassword.value ? 'type' : 'password');
-const onClickShowPassword = () => {
-    isShowPassword.value = !isShowPassword.value;
-};
 
 const onSubmit = handleSubmit(async () => {
     isLoading.value = true;
@@ -53,17 +44,16 @@ const onSubmit = handleSubmit(async () => {
         });
 
         if (response.result) {
-            sessionStorage.setItem('isAuth', 'true')
             isActionSucceed.value = true;
-            setTimeout(() => {
-                navigateTo('/', { replace: true })
-            }, 1500);
+            successfulAuth();
         } else {
-            let fieldType = Object.values(EFieldTypes)
-                .includes(response.errorType as EFieldTypes)
+            const fieldType = (Object.values(EFieldTypes) as string[])
+                .includes(response.errorType as string)
                 ? response.errorType as EFieldTypes : null;
 
-            fieldType && setFieldError(fieldType, response.errorMessage as string)
+            if (fieldType) {
+                setFieldError(fieldType, response.errorMessage as string)
+            }
         }
     } finally {
         isLoading.value = false;
@@ -86,13 +76,9 @@ const onSubmit = handleSubmit(async () => {
                     placeholder="Your email address"
                     :error-msg="errors.email"
                 />
-                <VInput
+                <VInputPassword
                     v-model="passwordValue"
-                    :type="passwordInputType"
-                    placeholder="Password"
-                    icon-name-after-content="heart-icon"
                     :error-msg="errors.password"
-                    @icon-after-content-click="onClickShowPassword"
                 />
             </form>
             <div :class="[$style.option, $style._spaceBetween]">

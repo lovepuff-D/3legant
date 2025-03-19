@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { RouterLinkProps } from '#vue-router';
-import IndexPageLink from '~/components/pages/components/IndexPageLink.vue';
+import IndexPageLink from '~/components/pages/index/IndexPageLink.vue';
 
 const props = withDefaults(defineProps<{
     title: string,

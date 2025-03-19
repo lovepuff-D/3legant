@@ -1,5 +1,5 @@
 <script setup lang="ts">
-
+import VIcon from '~/components/ui/VIcon.vue';
 </script>
 
 <template>
@@ -72,25 +72,19 @@
                         to="https://www.instagram.com/"
                         target="_blank"
                     >
-                        <svg>
-                            <use href="/svg-sprite/sprite.svg#instagram"/>
-                        </svg>
+                        <VIcon name="social-instagram"/>
                     </NuxtLink>
                     <NuxtLink
                         to="https://www.facebook.com/"
                         target="_blank"
                     >
-                        <svg>
-                            <use href="/svg-sprite/sprite.svg#facebook"/>
-                        </svg>
+                        <VIcon name="social-facebook"/>
                     </NuxtLink>
                     <NuxtLink
                         to="https://www.youtube.com/"
                         target="_blank"
                     >
-                        <svg>
-                            <use href="/svg-sprite/sprite.svg#youtube"/>
-                        </svg>
+                        <VIcon name="social-youtube"/>
                     </NuxtLink>
 
                 </div>
@@ -249,11 +243,6 @@ $company-info-gap_d: 32px;
 
     a {
         display: flex;
-    }
-
-    svg {
-        width: 24px;
-        height: 24px;
     }
 
     @include respond-to(d) {

@@ -2,7 +2,7 @@ import { faviconsTags } from './config/favicons';
 
 export default defineNuxtConfig({
     compatibilityDate: '2024-11-01',
-    devtools: {enabled: true},
+    devtools: { enabled: true },
 
     app: {
         head: {
@@ -10,15 +10,15 @@ export default defineNuxtConfig({
             link: [
                 {
                     href: 'https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap',
-                    rel: 'stylesheet'
+                    rel: 'stylesheet',
                 },
                 {
                     href: 'https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap',
-                    rel: 'stylesheet'
+                    rel: 'stylesheet',
                 },
                 ...faviconsTags,
             ],
-        }
+        },
     },
 
     imports: {
@@ -26,29 +26,40 @@ export default defineNuxtConfig({
     },
 
     components: {
-        dirs: []
+        dirs: [],
     },
 
     css: [
-        '~/assets/scss/main.scss'
+        '~/assets/scss/main.scss',
     ],
 
     vite: {
         css: {
             preprocessorOptions: {
                 scss: {
-                    additionalData: '@use "~/assets/scss/_variables.scss" as *;'
-                }
-            }
+                    additionalData: '@use "~/assets/scss/_variables.scss" as *;',
+                },
+            },
         },
     },
 
-    modules: [
-        '@nuxt/eslint',
-        '@nuxtjs/device'
-    ],
+    modules: ['@nuxt/eslint', '@nuxtjs/device', '@nuxt/icon'],
 
     device: {
-        refreshOnResize: true
-    }
+        refreshOnResize: true,
+    },
+
+    icon: {
+        mode: 'svg',
+        customCollections: [
+            {
+                prefix: 'icon',
+                dir: './assets/icons'
+            },
+            {
+                prefix: 'social',
+                dir: './assets/icons/social'
+            },
+        ],
+    },
 });
