@@ -1,4 +1,9 @@
-<script setup lang="ts">
+<script
+    setup
+    lang="ts"
+>
+import VIcon from '~/components/ui/VIcon.vue';
+
 const isOpen = ref(false);
 
 const handleOpening = () => {
@@ -21,9 +26,7 @@ const classList = computed(() => ({
         >
             <slot name="title"/>
             <div :class="$style.icon">
-                <svg>
-                    <use href="/svg-sprite/sprite.svg#chevron-bottom"/>
-                </svg>
+                <VIcon name="chevron-bottom"/>
             </div>
         </div>
         <div :class="$style.body">
@@ -32,7 +35,10 @@ const classList = computed(() => ({
     </div>
 </template>
 
-<style module lang="scss">
+<style
+    module
+    lang="scss"
+>
 .ExpansionPanel {
     overflow: hidden;
     display: grid;

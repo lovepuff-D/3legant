@@ -212,7 +212,7 @@ const onClickAddBtn = (evt: Event) => {
     background: $base;
     box-shadow: 0 0 13px -10px rgba(0, 0, 0, 0.75);
     transition: opacity $transition-duration;
-    opacity: 1;
+    opacity: 0;
 
     &._animationActive {
         svg {
@@ -236,7 +236,8 @@ const onClickAddBtn = (evt: Event) => {
 
     svg {
         path {
-            transition: fill $transition-duration, stroke $transition-duration;
+            fill: transparent;
+            transition: fill $transition-duration;
         }
     }
 
@@ -251,13 +252,14 @@ const onClickAddBtn = (evt: Event) => {
 }
 
 .actionBtn {
+    position: relative;
     width: 80%;
     height: 46px;
     padding: 8px;
     background: $neutral-07;
     border-radius: 8px;
     color: $neutral-01;
-    opacity: 1;
+    opacity: 0;
     transition: opacity $transition-duration;
 
     @include text(button-s, 500);
@@ -271,6 +273,9 @@ const onClickAddBtn = (evt: Event) => {
 .counter {
     position: absolute;
     inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .counter {

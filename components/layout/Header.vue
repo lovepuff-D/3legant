@@ -95,8 +95,9 @@ import { EIconSize } from '~/@types/ui/icon';
         width: 105px;
         height: 24px;
 
-        path#svg-company-logo-dot {
-            fill: $neutral-04;
+        path:nth-child(2) {
+            color: $neutral-04;
+            stroke: $neutral-04;
         }
     }
 }

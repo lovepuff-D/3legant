@@ -1,4 +1,10 @@
-<script setup lang="ts">
+<script
+    setup
+    lang="ts"
+>
+import { EIconSize } from '~/@types/ui/icon';
+import VIcon from '~/components/ui/VIcon.vue';
+
 definePageMeta({
     layout: false,
 });
@@ -7,11 +13,12 @@ definePageMeta({
 <template>
     <div :class="$style.wrapper">
         <div :class="$style.preview">
-            <div :class="$style.companyLogo">
-                <svg>
-                    <use href="/svg-sprite/sprite.svg#company-logo"/>
-                </svg>
-            </div>
+            <NuxtLink to="/" :class="$style.companyLogo">
+                <VIcon
+                    name="company-logo"
+                    :size="EIconSize.custom"
+                />
+            </NuxtLink>
             <img
                 :class="$style.img"
                 src="/public/images/auth.png"
@@ -24,7 +31,10 @@ definePageMeta({
     </div>
 </template>
 
-<style module lang="scss">
+<style
+    module
+    lang="scss"
+>
 .wrapper {
     position: relative;
     display: flex;
@@ -43,14 +53,26 @@ definePageMeta({
 }
 
 .companyLogo {
+    position: relative;
+    z-index: 1;
     display: flex;
     justify-content: center;
     margin-top: 32px;
+    transition: opacity $transition-duration;
+
+    &:hover {
+        opacity: 0.6;
+    }
 
     svg {
         width: 105px;
         height: 24px;
         margin: 0 auto;
+
+        path:nth-child(2) {
+            color: $neutral-04;
+            stroke: $neutral-04;
+        }
     }
 }
 

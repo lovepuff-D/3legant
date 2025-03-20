@@ -2,6 +2,7 @@
 import type { Product } from '~/@types/product';
 import ProductBadge from '~/components/shared/ProductBadge.vue';
 import { useSlider } from '~/composables/shared/useSlider';
+import VIcon from '~/components/ui/VIcon.vue';
 
 defineProps<{
     product: Product,
@@ -44,17 +45,17 @@ onMounted(() => {
                 ref="navigation-btn-prev"
                 :class="['swiper-navigation-btn', '_small', '_prev']"
             >
-                <svg>
-                    <use xlink:href="/svg-sprite/sprite.svg#arrow-right"/>
-                </svg>
+                <VIcon
+                    name="arrow-left"
+                />
             </div>
             <div
                 ref="navigation-btn-next"
                 :class="['swiper-navigation-btn', '_small', '_next']"
             >
-                <svg>
-                    <use xlink:href="/svg-sprite/sprite.svg#arrow-right"/>
-                </svg>
+                <VIcon
+                    name="arrow-right"
+                />
             </div>
             <div :class="['swiper-pagination']">
                 <div

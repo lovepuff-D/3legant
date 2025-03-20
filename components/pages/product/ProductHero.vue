@@ -41,8 +41,11 @@ const changeActiveProductColor = (colorItem: AvailableColorItem) => {
 
 <template>
     <div :class="$style.wrapper">
-        <ProductSlider :product="product"/>
-        <div>
+        <ProductSlider
+            :product="product"
+            :class="$style.slider"
+        />
+        <div :class="$style.content">
             <div :class="$style.productBaseInfo">
                 <div :class="$style.ratingRow">
                     <RatingIndicator :rating="product.rating"/>
@@ -194,6 +197,14 @@ const changeActiveProductColor = (colorItem: AvailableColorItem) => {
         flex-direction: row;
         gap: 64px;
     }
+}
+
+.slider {
+    max-width: 548px;
+}
+
+.content {
+    flex: 1;
 }
 
 .divider {

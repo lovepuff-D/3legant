@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import VIcon from '~/components/ui/VIcon.vue';
+import { EIconSize } from '~/@types/ui/icon';
 </script>
 
 <template>
@@ -8,9 +9,10 @@ import VIcon from '~/components/ui/VIcon.vue';
             <div :class="$style.top">
                 <div :class="$style.companyInfo">
                     <div :class="$style.companyLogo">
-                        <svg>
-                            <use href="/svg-sprite/sprite.svg#company-logo"/>
-                        </svg>
+                        <VIcon
+                            name="company-logo"
+                            :size="EIconSize.custom"
+                        />
                     </div>
                     <div :class="$style.companyType">
                         Gift & Decoration Store
@@ -154,6 +156,11 @@ $company-info-gap_d: 32px;
         width: 105px;
         height: 24px;
         stroke: white;
+
+        path:nth-child(2) {
+            color: $neutral-04;
+            stroke: $neutral-04;
+        }
     }
 }
 

@@ -77,6 +77,18 @@ onMounted(() => {
 <style module lang="scss">
 .wrapper {
     padding-bottom: 40px;
+
+    :global(.swiper) {
+        height: 100%;
+    }
+
+    :global(.swiper-navigation-btn) {
+        display: none;
+
+        @include respond-to(d) {
+            display: flex;
+        }
+    }
 }
 
 .slider {
@@ -89,6 +101,10 @@ onMounted(() => {
         height: 100%;
         object-fit: cover;
         object-position: center;
+    }
+
+    @include respond-to(t) {
+        height: 450px;
     }
 
     @include respond-to(d) {

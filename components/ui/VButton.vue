@@ -1,7 +1,11 @@
-<script setup lang="ts">
+<script
+    setup
+    lang="ts"
+>
 import type NuxtLink from '#app/components/nuxt-link';
 import { EColor, ESize } from '~/@types/ui/types';
 import VDotLoader from '~/components/ui/VDotLoader.vue';
+import VIcon from '~/components/ui/VIcon.vue';
 
 const props = withDefaults(defineProps<{
     tag?: keyof HTMLElementTagNameMap | InstanceType<typeof NuxtLink>,
@@ -23,8 +27,8 @@ const style = useCssModule();
 
 const classList = computed(() => [
     style.button,
-    style[`_${props.size}`],
-    style[`_${props.color}`],
+    style[`_${ props.size }`],
+    style[`_${ props.color }`],
     {
         [style._fullWidth]: props.fullWidth,
     },
@@ -32,7 +36,11 @@ const classList = computed(() => [
 </script>
 
 <template>
-    <component :is="tag" :class="classList" :disabled="loading">
+    <component
+        :is="tag"
+        :class="classList"
+        :disabled="loading"
+    >
         <Transition name="opacity">
             <div
                 v-show="loading"
@@ -45,23 +53,22 @@ const classList = computed(() => [
             v-if="iconNameBeforeContent"
             :class="$style.icon"
         >
-            <svg>
-                <use :href="`/svg-sprite/sprite.svg#${iconNameBeforeContent}`"/>
-            </svg>
+            <VIcon :name="iconNameBeforeContent"/>
         </div>
         <slot/>
         <div
             v-if="iconNameAfterContent"
             :class="$style.icon"
         >
-            <svg>
-                <use :href="`/svg-sprite/sprite.svg#${iconNameAfterContent}`"/>
-            </svg>
+            <VIcon :name="iconNameAfterContent"/>
         </div>
     </component>
 </template>
 
-<style module lang="scss">
+<style
+    module
+    lang="scss"
+>
 .button {
     position: relative;
     display: flex;
@@ -136,7 +143,6 @@ const classList = computed(() => [
         background: $neutral-07;
         border-color: $neutral-07;
         color: $base;
-
 
         /*&:hover {
             background: $base;

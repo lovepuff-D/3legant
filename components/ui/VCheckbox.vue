@@ -1,4 +1,9 @@
-<script setup lang="ts">
+<script
+    setup
+    lang="ts"
+>
+import VIcon from '~/components/ui/VIcon.vue';
+
 defineProps<{
     preContent?: string;
     postContent?: string;
@@ -6,12 +11,15 @@ defineProps<{
 }>();
 
 
-const modelValue = defineModel<boolean>({ required: true })
+const modelValue = defineModel<boolean>({ required: true });
 </script>
 
 <template>
     <label :class="[$style.VCheckbox, { [$style._active]: modelValue }]">
-        <slot v-if="$slots.pre" name="pre"/>
+        <slot
+            v-if="$slots.pre"
+            name="pre"
+        />
         <span v-else-if="preContent">{{ preContent }}</span>
 
         <input
@@ -21,20 +29,31 @@ const modelValue = defineModel<boolean>({ required: true })
             :class="$style.originalInput"
         >
         <span :class="$style.checkmarkBlock">
-            <svg :class="$style.checkmarkIcon">
-                <use :href="`/svg-sprite/sprite.svg#checkmark`"/>
-            </svg>
+            <VIcon
+                name="checkmark"
+                :class="$style.checkmarkIcon"
+            />
         </span>
 
-        <slot v-if="$slots.post" name="post"/>
+        <slot
+            v-if="$slots.post"
+            name="post"
+        />
         <span v-else-if="postContent">{{ postContent }}</span>
     </label>
     <Transition name="opacity">
-        <div v-show="errorMsg" :class="$style.errorMsg">{{ errorMsg }}</div>
+        <div
+            v-show="errorMsg"
+            :class="$style.errorMsg"
+        >{{ errorMsg }}
+        </div>
     </Transition>
 </template>
 
-<style module lang="scss">
+<style
+    module
+    lang="scss"
+>
 .VCheckbox {
     position: relative;
     display: flex;
@@ -63,7 +82,7 @@ const modelValue = defineModel<boolean>({ required: true })
 }
 
 .checkmarkBlock {
-    display: inline-block;
+    display: inline-flex;
     width: 24px;
     height: 24px;
     background: $base;
@@ -77,6 +96,7 @@ const modelValue = defineModel<boolean>({ required: true })
     height: 100%;
     transform: scale(0);
     transition: transform $transition-duration;
+    color: $base;
 }
 
 .errorMsg {

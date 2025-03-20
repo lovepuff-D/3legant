@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { InputHTMLAttributes, InputTypeHTMLAttribute } from 'vue';
+import VIcon from '~/components/ui/VIcon.vue';
 
 withDefaults(defineProps<{
     placeholder?: HTMLInputElement['placeholder'],
@@ -35,9 +36,9 @@ const modelValue = defineModel<string>({ required: true })
                 :class="$style.icon"
                 @click="emit('icon-after-content-click')"
             >
-                <svg>
-                    <use :href="`/svg-sprite/sprite.svg#${iconNameAfterContent}`"/>
-                </svg>
+                <VIcon
+                    :name="iconNameAfterContent"
+                />
             </span>
         </label>
         <Transition name="opacity">
@@ -94,11 +95,8 @@ const modelValue = defineModel<string>({ required: true })
 
 .icon {
     display: flex;
-
-    svg {
-        width: 24px;
-        height: 24px;
-    }
+    cursor: pointer;
+    user-select: none;
 }
 
 .errorMsg {

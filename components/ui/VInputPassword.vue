@@ -8,6 +8,12 @@ const passwordInputType = computed(() => isShowPassword.value ? 'text' : 'passwo
 const onClickShowPassword = () => {
     isShowPassword.value = !isShowPassword.value;
 };
+
+const $style = useCssModule();
+const classList = computed(() => [
+    $style.input,
+    { [$style._show]: isShowPassword.value }
+])
 </script>
 
 <template>
@@ -15,11 +21,16 @@ const onClickShowPassword = () => {
         v-model="modelValue"
         :type="passwordInputType"
         placeholder="Password"
-        icon-name-after-content="heart-icon"
+        icon-name-after-content="eye"
+        :class="classList"
         @icon-after-content-click="onClickShowPassword"
     />
 </template>
 
 <style module lang="scss">
-
+.input {
+    &._show svg {
+        color: $neutral-07;
+    }
+}
 </style>
