@@ -31,7 +31,7 @@ const path: BreadcrumbList = [
 </script>
 
 <template>
-    <div class="container">
+    <div class="container page">
         <Breadcrumbs
             :path="path"
             :class="$style.breadcrumbs"

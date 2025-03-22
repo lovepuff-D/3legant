@@ -11,7 +11,7 @@ const { data: cards } = await useFetch('/api/products')
 </script>
 
 <template>
-    <div>
+    <div class="page">
         <section class="container">
             <HeroBlock/>
         </section>

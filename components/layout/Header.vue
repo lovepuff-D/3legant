@@ -1,78 +1,120 @@
-<script setup lang="ts">
+<script
+    setup
+    lang="ts"
+>
 import VIcon from '~/components/ui/VIcon.vue';
 import { EIconSize } from '~/@types/ui/icon';
+import { throttle } from 'assets/helpers/common-utils';
+
+const lastScrollPosition = ref(0);
+const scrollMode = ref<'UP' | 'DOWN'>('UP');
+
+onMounted(() => {
+    lastScrollPosition.value = window.scrollY;
+
+    window.addEventListener('scroll', throttle(100, () => {
+        if (lastScrollPosition.value < window.scrollY) {
+            scrollMode.value = 'DOWN'
+        } else {
+            scrollMode.value = 'UP'
+        }
+        lastScrollPosition.value = window.scrollY;
+    }));
+});
 </script>
 
 <template>
-    <div class="container">
-        <header :class="$style.header">
-            <div :class="$style.leftSide">
-                <button :class="$style.menu">
-                    <VIcon name="burger-menu"/>
-                </button>
-                <NuxtLink to="/" :class="$style.companyLogo">
-                    <VIcon
-                        name="company-logo"
-                        :size="EIconSize.custom"
-                    />
-                </NuxtLink>
+    <header :class="[$style.header, $style[scrollMode === 'DOWN' ? '_scrollDown' : '_scrollUp']]">
+        <div class="container">
+            <div :class="$style.headerWrapper">
+                <div :class="$style.leftSide">
+                    <button :class="$style.menu">
+                        <VIcon name="burger-menu"/>
+                    </button>
+                    <NuxtLink
+                        to="/"
+                        :class="$style.companyLogo"
+                    >
+                        <VIcon
+                            name="company-logo"
+                            :size="EIconSize.custom"
+                        />
+                    </NuxtLink>
+                </div>
+                <nav :class="$style.navWrapper">
+                    <ul :class="$style.nav">
+                        <li>
+                            <NuxtLink
+                                to="/"
+                            >
+                                Home
+                            </NuxtLink>
+                        </li>
+                        <li>
+                            <NuxtLink
+                                to="/shop"
+                            >
+                                Shop
+                            </NuxtLink>
+                        </li>
+                        <li>
+                            <NuxtLink
+                                to="/product"
+                            >
+                                Product
+                            </NuxtLink>
+                        </li>
+                        <li>
+                            <NuxtLink
+                                to="/contact-us"
+                            >
+                                Contact Us
+                            </NuxtLink>
+                        </li>
+                    </ul>
+                </nav>
+                <div :class="$style.rightSide">
+                    <NuxtLink
+                        to="/auth/sign-in"
+                        :class="$style.svgBtn"
+                    >
+                        <VIcon name="user-circle"/>
+                    </NuxtLink>
+                    <!--TODO Вынести в компонент, эта штука используется в мобилке-->
+                    <button :class="[$style.svgBtn, $style.cartBtn]">
+                        <VIcon name="shopping-bag"/>
+                        <span :class="$style.cartQuantity">2</span>
+                    </button>
+                </div>
             </div>
-            <nav :class="$style.navWrapper">
-                <ul :class="$style.nav">
-                    <li>
-                        <NuxtLink
-                            to="/"
-                        >
-                            Home
-                        </NuxtLink>
-                    </li>
-                    <li>
-                        <NuxtLink
-                            to="/shop"
-                        >
-                            Shop
-                        </NuxtLink>
-                    </li>
-                    <li>
-                        <NuxtLink
-                            to="/product"
-                        >
-                            Product
-                        </NuxtLink>
-                    </li>
-                    <li>
-                        <NuxtLink
-                            to="/contact-us"
-                        >
-                            Contact Us
-                        </NuxtLink>
-                    </li>
-                </ul>
-            </nav>
-            <div :class="$style.rightSide">
-                <NuxtLink
-                    to="/auth/sign-in"
-                    :class="$style.svgBtn"
-                >
-                    <VIcon name="user-circle"/>
-                </NuxtLink>
-                <!--TODO Вынести в компонент, эта штука используется в мобилке-->
-                <button :class="[$style.svgBtn, $style.cartBtn]">
-                    <VIcon name="shopping-bag"/>
-                    <span :class="$style.cartQuantity">2</span>
-                </button>
-            </div>
-        </header>
-    </div>
+        </div>
+    </header>
 </template>
 
-<style module lang="scss">
+<style
+    module
+    lang="scss"
+>
 .header {
+    position: fixed;
+    inset: 0 0 auto;
+    z-index: 100;
+    background: $base;
+    box-shadow: 0 -10px 15px 0 rgba($neutral-07, .5);
+    transform: translateY(0);
+    transition: transform $transition-duration;
+
+    &._scrollDown {
+        transform: translateY(-100%);
+    }
+}
+
+.headerWrapper {
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 80px;
-    padding: 18px 0;
+    height: 60px;
 
     & > * {
         flex: 1;
