@@ -1,39 +1,7 @@
 <script setup lang="ts">
-import { $fetch } from 'ofetch';
-
 const { $fetchData } = useNuxtApp();
 
-console.log('compoennt 1');
-
-const { data: test } = await useAsyncData(async () => {
-    const res = await new Promise(res => {
-        setTimeout(() => {
-            res('qwe');
-        }, 1000);
-    })
-    const res2 = await new Promise(res => {
-        setTimeout(() => {
-            res('qwe');
-        }, 1000);
-    })
-    return res + res2;
-});
-
-console.log('compoennt 1.5', test.value);
-
-const { data: cards } = await useAsyncData(async () => {
-    const res1 = await $fetch('api/advantages');
-    console.log('isServer1', res1);
-    const res2 = await $fetchData.advantages.getAdvantages();
-    console.log('isServer2', res2);
-    return await $fetchData.advantages.getAdvantages();
-});
-
-console.log('compoennt 2', cards.value);
-
-onMounted(() => {
-    $fetchData.advantages.getAdvantages();
-})
+const { data: cards } = await useAsyncData(() => $fetchData.advantages.getAdvantages());
 </script>
 
 <template>

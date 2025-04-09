@@ -22,6 +22,11 @@ withDefaults(defineProps<{
 .VIcon {
     transition: color $transition-duration;
 
+    &.xxs {
+        width: 12px;
+        height: 12px;
+    }
+
     &.xs {
         width: 16px;
         height: 16px;

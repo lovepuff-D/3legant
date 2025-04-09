@@ -6,7 +6,8 @@ import SaleBannerBlock from '~/components/pages/index/SaleBannerBlock.vue';
 import PageSection from '~/components/pages/index/layout/PageSection.vue';
 import ProductList from '~/components/shared/ProductList.vue';
 
-const { data: cards } = await useFetch('/api/products')
+const { $fetchData } = useNuxtApp();
+const { data: cards } = await useAsyncData(() => $fetchData.product.getProducts());
 
 </script>
 

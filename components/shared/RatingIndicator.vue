@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import VIcon from '~/components/ui/VIcon.vue';
+import { EIconSize } from '~/@types/ui/icon';
+
 defineProps<{
     rating: number
 }>();
@@ -10,19 +13,20 @@ defineProps<{
         :class="[$style.rating]"
         :title="String(rating)"
     >
-        <svg
+        <VIcon
             v-for="i in 5"
             :key="i"
+            name="star"
+            :size="EIconSize.xs"
             :class="{ [$style._highlight]: i <= rating }"
-        >
-            <use href="/svg-sprite/sprite.svg#rating-star"/>
-        </svg>
+        />
     </div>
 </template>
 
 <style module lang="scss">
 .rating {
     display: flex;
+    align-items: center;
     gap: 2px;
 
     & > svg {
@@ -34,7 +38,9 @@ defineProps<{
     }
 
     ._highlight {
-        fill: $neutral-05;
+        path {
+            fill: $neutral-05;
+        }
     }
 }
 </style>

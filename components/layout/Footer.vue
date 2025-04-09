@@ -8,12 +8,15 @@ import { EIconSize } from '~/@types/ui/icon';
         <div :class="[$style.content, 'container']">
             <div :class="$style.top">
                 <div :class="$style.companyInfo">
-                    <div :class="$style.companyLogo">
+                    <NuxtLink
+                        to="/"
+                        :class="$style.companyLogo"
+                    >
                         <VIcon
                             name="company-logo"
                             :size="EIconSize.custom"
                         />
-                    </div>
+                    </NuxtLink>
                     <div :class="$style.companyType">
                         Gift & Decoration Store
                     </div>
@@ -106,7 +109,7 @@ import { EIconSize } from '~/@types/ui/icon';
     transition: opacity $transition-duration;
 
     &:hover {
-        opacity: .6;
+        opacity: .5;
     }
 }
 

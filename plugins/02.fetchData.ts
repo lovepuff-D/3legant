@@ -1,4 +1,3 @@
-import { $fetch } from 'ofetch';
 import auth from '~/config/api/auth';
 import products from '~/config/api/products';
 import advantages from '~/config/api/advantages';

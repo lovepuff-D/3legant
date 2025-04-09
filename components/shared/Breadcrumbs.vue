@@ -2,6 +2,8 @@
 // TODO Попробовать сделать path автогенерируемым
 import type { BreadcrumbList } from '~/@types/ui/breadcrumbs';
 import { useDevice } from '~/composables/shared/useDevice';
+import VIcon from '~/components/ui/VIcon.vue';
+import { EIconSize } from '~/@types/ui/icon';
 
 const props = defineProps<{
     path: BreadcrumbList,
@@ -47,13 +49,18 @@ const lastPath = computed(() => props.path[props.path.length - 1]);
             </template>
             <template v-else>
                 <li
-                    v-for="el in path"
+                    v-for="(el, index) in path"
                     :key="el.title"
                     :class="$style.breadcrumb"
                 >
                     <NuxtLink :to="el.link">
                         {{ el.title }}
                     </NuxtLink>
+                    <VIcon
+                        v-if="path.length !== index + 1"
+                        name="chevron-right"
+                        :size="EIconSize.xxs"
+                    />
                 </li>
             </template>
         </ul>
@@ -111,14 +118,6 @@ const lastPath = computed(() => props.path[props.path.length - 1]);
 
         &:hover {
             color: $neutral-07;
-        }
-
-        &:after {
-            content: '';
-            display: block;
-            width: 16px;
-            height: 16px;
-            background: url("/public/svg/arrow.svg");
         }
     }
 }

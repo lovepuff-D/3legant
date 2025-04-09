@@ -5,6 +5,8 @@
 import VIcon from '~/components/ui/VIcon.vue';
 import { EIconSize } from '~/@types/ui/icon';
 import { throttle } from 'assets/helpers/common-utils';
+import VModal from '~/components/ui/VModal.vue';
+import CartModal from '~/components/modals/CartModal.vue';
 
 const lastScrollPosition = ref(0);
 const scrollMode = ref<'UP' | 'DOWN'>('UP');
@@ -21,6 +23,8 @@ onMounted(() => {
         lastScrollPosition.value = window.scrollY;
     }));
 });
+
+const isShowCartModal = ref(false);
 </script>
 
 <template>
@@ -81,13 +85,22 @@ onMounted(() => {
                         <VIcon name="user-circle"/>
                     </NuxtLink>
                     <!--TODO Вынести в компонент, эта штука используется в мобилке-->
-                    <button :class="[$style.svgBtn, $style.cartBtn]">
+                    <button
+                        :class="[$style.svgBtn, $style.cartBtn]"
+                        @click="isShowCartModal = !isShowCartModal"
+                    >
                         <VIcon name="shopping-bag"/>
                         <span :class="$style.cartQuantity">2</span>
                     </button>
                 </div>
             </div>
         </div>
+        <VModal
+            v-if="isShowCartModal"
+            @close="isShowCartModal = false"
+        >
+            <CartModal/>
+        </VModal>
     </header>
 </template>
 

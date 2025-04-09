@@ -16,6 +16,10 @@ $neutral-07: #141718;
 
 $transition-duration: .3s;
 
+/* z-index */
+$modal-z-index: 1000;
+
+
 /* Private font mixin */
 /* Headings */
 @mixin -hero {
