@@ -6,7 +6,7 @@ import VIcon from '~/components/ui/VIcon.vue';
 import { EIconSize } from '~/@types/ui/icon';
 
 const props = defineProps<{
-    path: BreadcrumbList,
+    paths: BreadcrumbList,
 }>();
 
 const { isTablet } = useDevice();
@@ -19,15 +19,15 @@ const onClickEllipsis = () => {
 
 const isShortened = computed(() => !isTablet.value);
 
-const restPaths = computed(() => props.path.slice(1, props.path.length - 1));
-const firstPath = computed(() => props.path[0]);
-const lastPath = computed(() => props.path[props.path.length - 1]);
+const restPaths = computed(() => props.paths.slice(1, props.paths.length - 1));
+const firstPath = computed(() => props.paths[0]);
+const lastPath = computed(() => props.paths[props.paths.length - 1]);
 </script>
 
 <template>
     <div :class="$style.wrapper">
         <ul :class="$style.breadcrumbs">
-            <template v-if="isShortened && path.length > 3">
+            <template v-if="isShortened && paths.length > 3">
                 <li
                     :class="$style.breadcrumb"
                 >
@@ -49,7 +49,7 @@ const lastPath = computed(() => props.path[props.path.length - 1]);
             </template>
             <template v-else>
                 <li
-                    v-for="(el, index) in path"
+                    v-for="(el, index) in paths"
                     :key="el.title"
                     :class="$style.breadcrumb"
                 >
@@ -57,7 +57,7 @@ const lastPath = computed(() => props.path[props.path.length - 1]);
                         {{ el.title }}
                     </NuxtLink>
                     <VIcon
-                        v-if="path.length !== index + 1"
+                        v-if="paths.length !== index + 1"
                         name="chevron-right"
                         :size="EIconSize.xxs"
                     />

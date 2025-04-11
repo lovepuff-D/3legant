@@ -4,20 +4,21 @@ import ProductList from '~/components/shared/ProductList.vue';
 import PageSection from '~/components/pages/index/layout/PageSection.vue';
 import Breadcrumbs from '~/components/shared/Breadcrumbs.vue';
 import type { BreadcrumbList } from '~/@types/ui/breadcrumbs';
+import { ERoutes } from '~/@types/routes';
 
 const route = useRoute();
 const { $fetchData } = useNuxtApp();
 const { data: product } = await useAsyncData(() => $fetchData.product.getProduct(Number(route.params.id)));
 const { data: cards } = await useAsyncData(() => $fetchData.product.getProducts());
 
-const path: BreadcrumbList = [
+const paths: BreadcrumbList = [
     {
         title: 'Home',
-        link: '/',
+        link: ERoutes.Main,
     },
     {
         title: 'Shop',
-        link: '/shop',
+        link: ERoutes.Shop,
     },
     {
         title: product.value.title,
@@ -29,7 +30,7 @@ const path: BreadcrumbList = [
 <template>
     <div class="container page">
         <Breadcrumbs
-            :path="path"
+            :paths="paths"
             :class="$style.breadcrumbs"
         />
         <ProductHero
