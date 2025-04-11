@@ -6,9 +6,12 @@ import type { RouterLinkProps } from '#vue-router';
 import { EIconSize } from '~/@types/ui/icon';
 import VIcon from '~/components/ui/VIcon.vue';
 
-defineProps<{
-    href: RouterLinkProps['to']
-}>();
+withDefaults(defineProps<{
+    href: RouterLinkProps['to'],
+    isShowIcon?: boolean,
+}>(), {
+    isShowIcon: true,
+});
 </script>
 
 <template>
@@ -20,6 +23,7 @@ defineProps<{
             <span><slot/></span>
             <span>
             <VIcon
+                v-if="isShowIcon"
                 name="arrow-right"
                 :size="EIconSize.custom"
             />

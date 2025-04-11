@@ -5,8 +5,8 @@
 import VIcon from '~/components/ui/VIcon.vue';
 import { EIconSize } from '~/@types/ui/icon';
 import { throttle } from 'assets/helpers/common-utils';
-import VModal from '~/components/ui/VModal.vue';
 import CartModal from '~/components/modals/CartModal.vue';
+import { useModalV1 } from '~/composables/shared/useModalV1';
 
 const lastScrollPosition = ref(0);
 const scrollMode = ref<'UP' | 'DOWN'>('UP');
@@ -16,15 +16,16 @@ onMounted(() => {
 
     window.addEventListener('scroll', throttle(100, () => {
         if (lastScrollPosition.value < window.scrollY) {
-            scrollMode.value = 'DOWN'
+            scrollMode.value = 'DOWN';
         } else {
-            scrollMode.value = 'UP'
+            scrollMode.value = 'UP';
         }
         lastScrollPosition.value = window.scrollY;
     }));
 });
 
-const isShowCartModal = ref(false);
+const { openModal, closeModal, modalWrapper } = useModalV1();
+
 </script>
 
 <template>
@@ -87,7 +88,7 @@ const isShowCartModal = ref(false);
                     <!--TODO Вынести в компонент, эта штука используется в мобилке-->
                     <button
                         :class="[$style.svgBtn, $style.cartBtn]"
-                        @click="isShowCartModal = !isShowCartModal"
+                        @click="openModal"
                     >
                         <VIcon name="shopping-bag"/>
                         <span :class="$style.cartQuantity">2</span>
@@ -95,12 +96,9 @@ const isShowCartModal = ref(false);
                 </div>
             </div>
         </div>
-        <VModal
-            v-if="isShowCartModal"
-            @close="isShowCartModal = false"
-        >
-            <CartModal/>
-        </VModal>
+        <component :is="modalWrapper">
+            <CartModal @close="closeModal"/>
+        </component>
     </header>
 </template>
 

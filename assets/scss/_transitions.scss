@@ -12,3 +12,18 @@
 .opacity-leave-to {
     opacity: 0;
 }
+
+.modal-right-enter-active,
+.modal-right-leave-active {
+    transition: all $transition-duration ease;
+}
+
+.modal-right-enter-to,
+.modal-right-leave-from {
+    transform: translateX(0);
+}
+
+.modal-right-enter-from,
+.modal-right-leave-to {
+    transform: translateX(100%);
+}

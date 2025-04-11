@@ -3,14 +3,24 @@
     lang="ts"
 >
 
+import VButton from '~/components/ui/VButton.vue';
+import IndexPageLink from '~/components/pages/index/IndexPageLink.vue';
+import VModalCloseBtn from '~/components/ui/modal/VModalCloseBtn.vue';
+
+const emit = defineEmits<{
+    close: [],
+}>();
 </script>
 
 <template>
     <div :class="$style.CartModal">
-        <div :class="$style.title">Cart</div>
+        <div :class="$style.title">
+            <div>Cart</div>
+            <VModalCloseBtn @close="emit('close')"/>
+        </div>
         <div :class="$style.cartList">
             <div
-                v-for="item in 10"
+                v-for="item in 3"
                 :key="item"
                 :class="$style.shoppingCard"
             >
@@ -110,16 +120,24 @@
             </div>
         </div>
         <div :class="$style.summary">
-            <div>
+            <div :class="$style.subtotal">
                 <div>Subtotal</div>
                 <div>$99.00</div>
             </div>
-            <div>
+            <div :class="$style.total">
                 <div>Total</div>
                 <div>$234.00</div>
             </div>
-            <button>Checkout</button>
-            <button>View Cart</button>
+            <VButton full-width>
+                Checkout
+            </VButton>
+            <IndexPageLink
+                href="/cart"
+                :is-show-icon="false"
+                :class="$style.linkToCart"
+            >
+                View Cart
+            </IndexPageLink>
         </div>
     </div>
 </template>
@@ -129,12 +147,23 @@
     lang="scss"
 >
 .CartModal {
-    overflow: auto;
-    min-width: 343px;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+
+    @include respond-to(t) {
+        min-width: 413px;
+    }
 }
 
 .title {
     @include heading(heading-6);
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-shrink: 0;
+    margin-bottom: 24px;
 }
 
 .cartList {
@@ -142,8 +171,8 @@
     display: flex;
     flex-direction: column;
     gap: 16px;
+    flex: 1 1 auto;
     height: 200px;
-    padding: 24px 0;
 }
 
 .shoppingCard {
@@ -151,9 +180,34 @@
 }
 
 .summary {
-    position: absolute;
-    inset: auto 0 40px;
-    padding: 24px;
+    flex-shrink: 0;
+    padding-top: 8px;
     background: $base;
+    text-align: center;
+}
+
+.subtotal,
+.total {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 0;
+}
+
+.subtotal {
+    @include text(body-2);
+
+    border-bottom: 1px solid $neutral-03;
+
+    *:last-child {
+        @include text(body-2, semi);
+    }
+}
+
+.total {
+    @include heading(heading-7);
+}
+
+.linkToCart {
+    margin-top: 16px;
 }
 </style>
