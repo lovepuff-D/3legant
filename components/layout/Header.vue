@@ -7,6 +7,26 @@ import { EIconSize } from '~/@types/ui/icon';
 import { throttle } from 'assets/helpers/common-utils';
 import CartModal from '~/components/modals/CartModal.vue';
 import { useModalV1 } from '~/composables/shared/useModalV1';
+import { ERoutes } from '~/@types/routes';
+
+const links = [
+    {
+        title: 'Home',
+        to: ERoutes.Main,
+    },
+    {
+        title: 'Shop',
+        to: ERoutes.Shop,
+    },
+    {
+        title: 'Blog',
+        to: ERoutes.Blog,
+    },
+    {
+        title: 'Contact Us',
+        to: ERoutes.ContactUs,
+    },
+];
 
 const lastScrollPosition = ref(0);
 const scrollMode = ref<'UP' | 'DOWN'>('UP');
@@ -25,7 +45,6 @@ onMounted(() => {
 });
 
 const { openModal, closeModal, modalWrapper } = useModalV1();
-
 </script>
 
 <template>
@@ -48,32 +67,12 @@ const { openModal, closeModal, modalWrapper } = useModalV1();
                 </div>
                 <nav :class="$style.navWrapper">
                     <ul :class="$style.nav">
-                        <li>
-                            <NuxtLink
-                                to="/"
-                            >
-                                Home
-                            </NuxtLink>
-                        </li>
-                        <li>
-                            <NuxtLink
-                                to="/shop"
-                            >
-                                Shop
-                            </NuxtLink>
-                        </li>
-                        <li>
-                            <NuxtLink
-                                to="/product"
-                            >
-                                Product
-                            </NuxtLink>
-                        </li>
-                        <li>
-                            <NuxtLink
-                                to="/contact-us"
-                            >
-                                Contact Us
+                        <li
+                            v-for="link in links"
+                            :key="link.to"
+                        >
+                            <NuxtLink :to="link.to">
+                                {{ link.title }}
                             </NuxtLink>
                         </li>
                     </ul>

@@ -27,7 +27,11 @@ const { values: formValues, defineField, errors, setFieldError, handleSubmit } =
     validationSchema: toTypedSchema(yup.object({
         email: yup.string().required().email(),
         password: yup.string().required(),
-    }))
+    })),
+    initialValues: {
+        email: 'test@gmail.com',
+        password: 'test',
+    }
 })
 
 const [emailValue] = defineField(EFieldTypes.email, defineFiledConfig);

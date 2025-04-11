@@ -17,11 +17,12 @@
 .VModalBase {
     overflow: auto;
     position: absolute;
-    inset: 0 0 0 auto;
+    inset: auto 0 0;
     padding: 24px;
     background: $base;
 
     @include respond-to(d) {
+        inset: 0 0 0 auto;
         padding: 40px 24px;
     }
 }

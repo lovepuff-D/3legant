@@ -13,6 +13,22 @@
     opacity: 0;
 }
 
+.opacity-replace-enter-active,
+.opacity-replace-leave-active {
+    position: absolute;
+    transition: all $transition-duration ease;
+}
+
+.opacity-replace-enter-to,
+.opacity-replace-leave-from {
+    opacity: 1;
+}
+
+.opacity-replace-enter-from,
+.opacity-replace-leave-to {
+    opacity: 0;
+}
+
 .modal-right-enter-active,
 .modal-right-leave-active {
     transition: all $transition-duration ease;
@@ -26,4 +42,20 @@
 .modal-right-enter-from,
 .modal-right-leave-to {
     transform: translateX(100%);
+}
+
+
+.modal-bottom-enter-active,
+.modal-bottom-leave-active {
+    transition: all $transition-duration ease;
+}
+
+.modal-bottom-enter-to,
+.modal-bottom-leave-from {
+    transform: translateY(0);
+}
+
+.modal-bottom-enter-from,
+.modal-bottom-leave-to {
+    transform: translateY(100%);
 }

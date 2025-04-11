@@ -61,7 +61,11 @@ const addToFavorite = () => {
             :size="isDesktop ? ESize.medium : ESize.small"
             @click="addToCart"
         >
-            {{ addToCartText }}
+            <Transition name="opacity-replace">
+                <span :key="addToCartText">
+                    {{ addToCartText }}
+                </span>
+            </Transition>
         </VButton>
     </div>
 </template>

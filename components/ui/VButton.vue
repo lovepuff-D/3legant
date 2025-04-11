@@ -11,6 +11,7 @@ const props = withDefaults(defineProps<{
     tag?: keyof HTMLElementTagNameMap | InstanceType<typeof NuxtLink>,
     size?: ESize,
     color?: EColor,
+    disabled?: boolean
     loading?: boolean,
     fullWidth?: boolean,
     iconNameBeforeContent?: string,
@@ -20,6 +21,7 @@ const props = withDefaults(defineProps<{
     size: ESize.medium,
     color: EColor.black,
     loading: false,
+    disabled: false,
     fullWidth: false,
 });
 
@@ -31,6 +33,7 @@ const classList = computed(() => [
     style[`_${ props.color }`],
     {
         [style._fullWidth]: props.fullWidth,
+        [style._disabled]: props.disabled,
     },
 ]);
 </script>
@@ -165,6 +168,11 @@ const classList = computed(() => [
 
     &._fullWidth {
         width: 100%;
+    }
+
+    &._disabled {
+        pointer-events: none;
+        opacity: .3;
     }
 }
 

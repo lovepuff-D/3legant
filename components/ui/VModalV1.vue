@@ -3,6 +3,8 @@
     lang="ts"
 >
 import VModalBase from '~/components/ui/modal/VModalBase.vue';
+import { useDevice } from '~/composables/shared/useDevice';
+import { EModalTransition } from '~/@types/ui/modals';
 
 const emit = defineEmits<{
     'remove-instance': [],
@@ -10,6 +12,9 @@ const emit = defineEmits<{
 }>();
 
 const modelValue = defineModel<boolean>({ required: true });
+
+const { isDesktop } = useDevice();
+const modalTransition = computed(() => isDesktop.value ? EModalTransition.Right : EModalTransition.Bottom);
 
 const close = () => {
     modelValue.value = false;
@@ -34,7 +39,7 @@ const afterLeave = () => {
                 />
             </Transition>
             <Transition
-                name="modal-right"
+                :name="modalTransition"
                 appear
                 @after-leave="afterLeave"
             >
